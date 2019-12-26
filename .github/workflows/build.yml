@@ -1,4 +1,4 @@
-name: Build Server
+name: Build Web
 
 on: [push]
 
@@ -17,6 +17,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: build
-        run: ./build.sh
+        run: yarn build
         env:
           CI: true

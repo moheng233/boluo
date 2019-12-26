@@ -75,6 +75,8 @@ typings/
 # IDE - IDEA
 .idea/
 
+# Parcel
+.parcel-cache
 
 # Server related deploy files
 deploy/
