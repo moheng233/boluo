@@ -19,7 +19,6 @@ type Channel {
   owner: User!
   ownerId: ID!
   messages(after: ID, limit: Int): [Message!]!
-  invitations: [Invitation!]!
   members: [Members!]!
   diceDefaultFace: Int!
 

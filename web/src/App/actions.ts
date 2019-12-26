@@ -6,7 +6,6 @@ export enum ActionType {
 export interface OpenChannel {
   type: ActionType.OpenChannel;
   name: string;
-  title: string;
   id: string;
 }
 

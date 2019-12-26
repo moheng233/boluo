@@ -14,57 +14,30 @@ import { Message } from '../messages/messages.entity';
 import { User } from '../users/users.entity';
 import { Invitation } from '../invitaions/invitaions.entity';
 import { Member } from '../members/members.entity';
+import { Channel } from '../channels/channels.entity';
 
-export enum ChannelType {
-  Game = 'Game',
-  Discuss = 'Discuss',
-}
-
-registerEnumType(ChannelType, { name: 'ChannelType' });
-
-@Entity('channels')
+@Entity('spaces')
 @Index(['name', 'parentId'], { unique: true })
 @ObjectType('Channel')
-export class Channel {
+export class Space {
   @PrimaryColumn({ type: 'uuid' })
   @Field(() => ID)
   id!: string;
 
-  @Column({ type: 'enum', enum: ChannelType, default: ChannelType.Discuss })
-  @Field(() => ChannelType)
-  type!: ChannelType;
-
   @Column({ type: 'boolean', default: false })
   @Field()
   isPublic!: boolean;
-
-  @ManyToOne(
-    () => Channel,
-    channel => channel.children,
-    { nullable: true }
-  )
-  @JoinColumn({ name: 'parentId' })
-  @Field(() => Channel, { nullable: true })
-  parent!: Promise<Channel> | null;
-
-  @Column({ type: 'uuid', nullable: true })
-  @Field(() => ID, { nullable: true })
-  parentId!: string | null;
 
   @OneToMany(
     () => Channel,
     channel => channel.parent
   )
   @Field(() => [Channel])
-  children!: Promise<Channel[]>;
+  channels!: Promise<Channel[]>;
 
   @Column()
   @Field()
   name!: string;
-
-  @Column({ default: '' })
-  @Field()
-  topic!: string;
 
   @Column({ default: '' })
   @Field()
@@ -78,10 +51,6 @@ export class Channel {
   @Field()
   modified!: Date;
 
-  @Column({ type: 'boolean', default: false })
-  @Field()
-  isArchived!: boolean;
-
   @ManyToOne(() => User, { nullable: false })
   @JoinColumn({ name: 'ownerId' })
   @Field(() => User, { nullable: false })
@@ -92,15 +61,14 @@ export class Channel {
   ownerId!: string;
 
   @OneToMany(
-    () => Message,
-    message => message.channel
+    () => Invitation,
+    invitation => invitation.space
   )
-  @Field(() => [Message])
-  messages!: Promise<Message[]>;
+  invitations!: Promise<Invitation[]>;
 
   @OneToMany(
     () => Member,
-    member => member.channel
+    member => member.space
   )
   @Field(() => [Member])
   members!: Promise<Member[]>;

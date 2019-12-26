@@ -9,7 +9,6 @@ const CHANNEL_LIST = gql`
     channels {
       id
       name
-      title
     }
   }
 `;
@@ -17,7 +16,6 @@ const CHANNEL_LIST = gql`
 interface Channel {
   id: string;
   name: string;
-  title: string;
 }
 
 export interface Props {}

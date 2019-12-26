@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn 
 import { Field, ID, ObjectType } from 'type-graphql';
 import { User } from '../users/users.entity';
 import { Channel } from '../channels/channels.entity';
+import { Space } from '../spaces/spaces.entity';
 
 @Entity('members')
 @ObjectType('Members')
@@ -15,14 +16,18 @@ export class Member {
   @Field(() => ID)
   userId!: string;
 
-  @ManyToOne(() => Channel, channel => channel.members, { nullable: false, onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'channelId' })
+  @ManyToOne(
+    () => Space,
+    space => space.members,
+    { nullable: false, onDelete: 'CASCADE' }
+  )
+  @JoinColumn({ name: 'spaceId' })
   @Field(() => Channel)
-  channel!: Promise<Channel>;
+  space!: Promise<Space>;
 
   @PrimaryColumn({ type: 'uuid' })
   @Field(() => ID)
-  channelId!: string;
+  spaceId!: string;
 
   @Column({ type: 'boolean', default: false })
   @Field()
