@@ -16,7 +16,7 @@ export interface LoginResult {
 }
 
 export const login = (username: string, password: string): Promise<AppResult<LoginResult>> => {
-  return post<User>('/users/login', { username, password });
+  return post<LoginResult>('/users/login', { username, password });
 };
 
 export const queryUser = (id: string): Promise<AppResult<User>> => {
