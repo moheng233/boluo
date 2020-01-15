@@ -1,16 +1,11 @@
-export interface Return<T> {
-  value: T;
-  type: 'return';
-  statusCode: number;
+import { Result } from '../result';
+
+export interface AppError {
+  code: string;
+  message: string;
 }
 
-export interface Err {
-  value: string;
-  type: 'error';
-  statusCode: number;
-}
-
-export type AppResult<T> = Return<T> | Err;
+export type AppResult<T> = Result<T, AppError>;
 
 const csrfKey = 'csrf-token';
 
@@ -19,13 +14,13 @@ const isTimeout = (token: string): boolean => {
   if (!matched) {
     return true;
   }
-  const expire = parseInt(matched[1]);
+  const expire = parseInt(matched[1], 10);
   const now = new Date().getTime() / 1000;
   return expire < now;
 };
 
 const getCsrfToken = async (): Promise<string> => {
-  let csrfToken: string | null = localStorage.getItem(csrfKey);
+  const csrfToken: string | null = localStorage.getItem(csrfKey);
   if (csrfToken == null || isTimeout(csrfToken)) {
     return refreshCsrfToken();
   }
@@ -35,11 +30,11 @@ const getCsrfToken = async (): Promise<string> => {
 const refreshCsrfToken = async (): Promise<string> => {
   const fetched = await fetch('/api/csrf-token', { credentials: 'include' });
   const csrfResult: AppResult<string> = await fetched.json();
-  if (csrfResult.type == 'return') {
-    localStorage.setItem(csrfKey, csrfResult.value);
-    return csrfResult.value;
+  if (csrfResult.ok) {
+    localStorage.setItem(csrfKey, csrfResult.some);
+    return csrfResult.some;
   } else {
-    throw new Error(csrfResult.value);
+    throw new Error(csrfResult.err.message);
   }
 };
 

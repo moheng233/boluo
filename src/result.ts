@@ -62,3 +62,5 @@ export namespace Result {
     }
   };
 }
+
+export type Result<T, E> = Result.Result<T, E>;
