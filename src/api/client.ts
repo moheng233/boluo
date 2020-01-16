@@ -5,6 +5,30 @@ export interface AppError {
   message: string;
 }
 
+const notJson: AppError = {
+  code: 'NOT_JSON',
+  message: 'The response body is not JSON',
+};
+
+export const errorHandle = (e: AppError): string => {
+  switch (e.code) {
+    case 'UNAUTHENTICATED':
+      window.setTimeout(() => (window.location.pathname = '/login'), 1000);
+      return '页面需要登录，你将跳转到登录页面';
+    case 'NO_PERMISSION':
+      return '你没有访问权限';
+    case 'NOT_JSON':
+      return '搞砸了! 服务器返回的消息格式有误，可能是服务器或者您的网络故障';
+    case 'UNEXPECTED':
+      return 'Oops! 服务器内部错误';
+    case 'BAD_REQUEST':
+      return '出错了! 请求格式有误';
+    default:
+      console.warn(e);
+      return '发生了一个本该处理但未处理的错误';
+  }
+};
+
 export type AppResult<T> = Result<T, AppError>;
 
 const csrfKey = 'csrf-token';
@@ -47,7 +71,7 @@ export const request = async <T>(path: string, method: string, payload: object |
   } else {
     body = null;
   }
-  let result = await fetch(path, {
+  const result = await fetch(path, {
     method,
     headers: new Headers({
       'Content-Type': 'application/json',
@@ -56,16 +80,24 @@ export const request = async <T>(path: string, method: string, payload: object |
     body,
     credentials: 'include',
   });
-  return await result.json();
+  try {
+    return await result.json();
+  } catch (e) {
+    return Result.Err(notJson);
+  }
 };
 
 export const post = <T>(path: string, payload: object): Promise<AppResult<T>> => request(path, 'POST', payload);
 
-type Query = { [key: string]: string | number | boolean | null };
+export const clearCsrfToken = () => localStorage.removeItem(csrfKey);
+
+interface Query {
+  [key: string]: string | number | boolean | null;
+}
 
 export const get = <T>(path: string, query: Query): Promise<AppResult<T>> => {
   const parts = [];
-  for (let key in query) {
+  for (const key in query) {
     if (query.hasOwnProperty(key)) {
       const value = query[key];
       if (value !== null) {

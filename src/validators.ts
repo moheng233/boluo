@@ -4,12 +4,16 @@ import { Result } from './result';
 const Err = Result.Err;
 const ok = Result.Ok(undefined);
 
-export type ValidatorResult = Result.Result<undefined, string>;
+export type ValidatorResult = Result<undefined, string>;
 
-export function checkEmailFormat(email: string): boolean {
+export function checkEmailFormat(email: string): ValidatorResult {
   // tslint:disable-next-line:max-line-length
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
+  if (re.test(String(email).toLowerCase())) {
+    return ok;
+  } else {
+    return Err('Invalid email address.');
+  }
 }
 
 export function checkUsername(username: string): ValidatorResult {
