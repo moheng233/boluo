@@ -1,4 +1,5 @@
 import { Result } from '../result';
+import { clearMe } from './users';
 
 export interface AppError {
   code: string;
@@ -13,7 +14,9 @@ const notJson: AppError = {
 export const errorHandle = (e: AppError): string => {
   switch (e.code) {
     case 'UNAUTHENTICATED':
-      window.setTimeout(() => (window.location.pathname = '/login'), 1000);
+      clearMe();
+      clearCsrfToken();
+      window.setTimeout(() => (window.location.pathname = '/login'), 3000);
       return '页面需要登录，你将跳转到登录页面';
     case 'NO_PERMISSION':
       return '你没有访问权限';
@@ -62,9 +65,24 @@ const refreshCsrfToken = async (): Promise<string> => {
   }
 };
 
-export const request = async <T>(path: string, method: string, payload: object | null): Promise<AppResult<T>> => {
-  path = '/api' + path;
-  const csrfToken = await getCsrfToken();
+export const request = async <T>(
+  path: string,
+  method: string,
+  payload: object | null,
+  csrf: boolean = true
+): Promise<AppResult<T>> => {
+  if (path[0] !== '/') {
+    path = '/api/' + path;
+  } else {
+    path = '/api' + path;
+  }
+
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+  });
+  if (csrf) {
+    headers.append('csrf-token', await getCsrfToken());
+  }
   let body: string | null;
   if (payload !== null) {
     body = JSON.stringify(payload);
@@ -73,10 +91,7 @@ export const request = async <T>(path: string, method: string, payload: object |
   }
   const result = await fetch(path, {
     method,
-    headers: new Headers({
-      'Content-Type': 'application/json',
-      'csrf-token': csrfToken,
-    }),
+    headers,
     body,
     credentials: 'include',
   });
@@ -87,15 +102,13 @@ export const request = async <T>(path: string, method: string, payload: object |
   }
 };
 
-export const post = <T>(path: string, payload: object): Promise<AppResult<T>> => request(path, 'POST', payload);
-
 export const clearCsrfToken = () => localStorage.removeItem(csrfKey);
 
 interface Query {
   [key: string]: string | number | boolean | null;
 }
 
-export const get = <T>(path: string, query: Query): Promise<AppResult<T>> => {
+const makePath = (path: string, query: Query): string => {
   const parts = [];
   for (const key in query) {
     if (query.hasOwnProperty(key)) {
@@ -105,5 +118,16 @@ export const get = <T>(path: string, query: Query): Promise<AppResult<T>> => {
       }
     }
   }
-  return request(`${path}?${parts.join('&')}`, 'GET', null);
+  return `${path}?${parts.join('&')}`;
+};
+
+export const post = <T, U extends object = object>(
+  path: string,
+  payload: U,
+  query: Query = {},
+  csrf: boolean = true
+): Promise<AppResult<T>> => request(makePath(path, query), 'POST', payload, csrf);
+
+export const get = <T>(path: string, query: Query = {}): Promise<AppResult<T>> => {
+  return request(makePath(path, query), 'GET', null, false);
 };

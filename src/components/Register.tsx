@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { ErrorMessage } from './ErrorMessage';
+import { Link, useHistory, Redirect } from 'react-router-dom';
+import { FormError } from './FormError';
 import { checkEmailFormat, checkName, checkPassword, checkUsername, ValidatorResult } from '../validators';
-import { InputChangeHandler } from '../utils';
+import { InputChangeHandler } from '../types';
 import { register } from '../api/users';
 import { errorHandle } from '../api/client';
+import { useMe } from './App';
 
 const handlerMaker = (
   setValue: (value: string) => void,
@@ -21,7 +22,7 @@ const handlerMaker = (
   }
 };
 
-export const Register = () => {
+export const Register: React.FC = () => {
   const history = useHistory();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -34,6 +35,11 @@ export const Register = () => {
   const [passwordError, setPasswordError] = useState('');
   const [registerError, setRegisterError] = useState('');
   const [passwordRepeatError, setPasswordRepeatError] = useState('');
+  const me = useMe();
+
+  if (me !== null) {
+    return <Redirect to="/" />;
+  }
 
   const usernameHandler: InputChangeHandler = handlerMaker(setUsername, setUsernameError, checkUsername);
 
@@ -42,6 +48,12 @@ export const Register = () => {
   const nicknameHandler: InputChangeHandler = handlerMaker(setNickname, setNicknameError, checkName);
 
   const passwordHandler: InputChangeHandler = handlerMaker(setPassword, setPasswordError, checkPassword);
+
+  const someEmpty = [username, password, email, nickname, passwordRepeat].some(e => e.length === 0);
+  const someError = [usernameError, emailError, nicknameError, passwordError, passwordRepeatError].some(
+    e => e.length > 0
+  );
+  const isDisabled = someError || someEmpty;
 
   const passwordRepeatHandler: InputChangeHandler = e => {
     const { value } = e.target;
@@ -55,6 +67,9 @@ export const Register = () => {
 
   const handleSubmit: React.FormEventHandler = async e => {
     e.preventDefault();
+    if (isDisabled) {
+      return;
+    }
     const registerResult = await register(email, username, password, nickname);
     if (registerResult.ok) {
       history.push('/login');
@@ -72,46 +87,50 @@ export const Register = () => {
   };
 
   return (
-    <main className="Register">
+    <div className="Register">
       <header>
-        <Link to="/">菠萝</Link>
+        <Link className="logo" to="/">
+          菠萝
+        </Link>
         <h1>注册</h1>
-        <p>享用酸甜可口的菠萝吧。</p>
+        <p>享用酸甜可口的菠萝吧</p>
       </header>
       <form className="register-form" onSubmit={handleSubmit}>
-        <ErrorMessage message={registerError} />
-        <p className="field">
-          <label htmlFor="username">用户名:</label>
+        <FormError message={registerError} />
+        <div className="field">
+          <label htmlFor="username">用户名</label>
           <input id="username" value={username} onChange={usernameHandler} />
-        </p>
-        <ErrorMessage message={usernameError} />
-        <p className="field">
-          <label htmlFor="email">邮箱:</label>
+          <FormError message={usernameError} />
+        </div>
+        <div className="field">
+          <label htmlFor="email">邮箱</label>
           <input id="email" value={email} onChange={emailHandler} />
-        </p>
-        <ErrorMessage message={emailError} />
-        <p className="field">
-          <label htmlFor="nickname">昵称:</label>
+          <FormError message={emailError} />
+        </div>
+        <div className="field">
+          <label htmlFor="nickname">昵称</label>
           <input id="nickname" value={nickname} onChange={nicknameHandler} />
-        </p>
-        <ErrorMessage message={nicknameError} />
-        <p className="field">
-          <label htmlFor="password">密码:</label>
+          <FormError message={nicknameError} />
+        </div>
+        <div className="field">
+          <label htmlFor="password">密码</label>
           <input id="password" type="password" value={password} onChange={passwordHandler} />
-        </p>
-        <ErrorMessage message={passwordError} />
-        <p className="field">
-          <label htmlFor="password-repeat">重复密码:</label>
+          <FormError message={passwordError} />
+        </div>
+        <div className="field">
+          <label htmlFor="password-repeat">重复密码</label>
           <input id="password-repeat" type="password" value={passwordRepeat} onChange={passwordRepeatHandler} />
-        </p>
-        <ErrorMessage message={passwordRepeatError} />
-        <p>
-          <button type="submit">注册</button>
-        </p>
+          <FormError message={passwordRepeatError} />
+        </div>
+        <div>
+          <button type="submit" disabled={isDisabled}>
+            注册
+          </button>
+        </div>
       </form>
       <p className="had-account">
         已经有账号了？<Link to="/login">登录</Link>。
       </p>
-    </main>
+    </div>
   );
 };

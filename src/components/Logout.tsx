@@ -1,16 +1,28 @@
-import React from 'react';
-import { clearMe } from '../api/users';
-import { clearCsrfToken, get } from '../api/client';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
+import { useDispatch, useMe } from './App';
+import { logout } from '../state/actions';
+import { get } from '../api/client';
 
-export const Logout = () => {
-  const history = useHistory();
-  clearMe();
-  clearCsrfToken();
-  get('users/logout', {}).then(() => history.push('/'));
+export const Logout: React.FC = () => {
+  const me = useMe();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (me !== null) {
+      get('/users/logout').then(() => {
+        dispatch(logout());
+      });
+    }
+  }, [me]);
+
+  if (me === null) {
+    return <Redirect to="/" />;
+  }
+
   return (
-    <main>
-      <h1>Logout</h1>
-    </main>
+    <div className="Logout">
+      <h1>登出中…</h1>
+    </div>
   );
 };
