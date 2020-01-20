@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link, Redirect, useParams } from 'react-router-dom';
 import { login } from '../api/users';
-import { errorHandle } from '../api/client';
-import { FormError } from './FormError';
 import { useDispatch, useMe } from './App';
-import { login as makeLogin } from '../state/actions';
+import { errorInfo, login as makeLogin } from '../state/actions';
+import { throwAppError } from '../helper/fetch';
+import { fetchJoined } from '../api/spaces';
 
 type InputChange = React.ChangeEventHandler<HTMLInputElement>;
 
@@ -15,7 +15,6 @@ interface Params {
 export const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   const dispatch = useDispatch();
   const { next } = useParams<Params>();
@@ -36,14 +35,14 @@ export const Login: React.FC = () => {
     if (isDisabled) {
       return;
     }
-    const me = await login(username, password);
-    if (me.ok) {
-      dispatch(makeLogin(me.some.user));
-    } else if (me.err.code === 'NO_PERMISSION') {
-      setErrorMessage('登录失败，请检查您的用户名和密码');
-    } else {
-      setErrorMessage(errorHandle(me.err));
+    const meResult = await login(username, password);
+    if (!meResult.ok && meResult.err.code === 'NO_PERMISSION') {
+      dispatch(errorInfo('登录失败，请检查您的用户名和密码'));
+      return;
     }
+    const me = await throwAppError(dispatch, meResult);
+    dispatch(makeLogin(me.user));
+    await fetchJoined(dispatch);
   };
 
   return (
@@ -55,7 +54,6 @@ export const Login: React.FC = () => {
         <h1>登录</h1>
       </header>
       <form onSubmit={onSubmit} className="login-form">
-        <FormError message={errorMessage} />
         <p className="field">
           <label htmlFor="username">用户名</label>
           <input id="username" value={username} onChange={onUsernameChange} />
