@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useJoinedMap, useMe } from './App';
-import { ButtonHandler } from '../types';
-import { CreateChannelForm } from './CreateChannelForm';
+import { DefaultButton } from 'office-ui-fabric-react';
+import { CreateChannelDialog } from './CreateChannelDialog';
 
 interface Props {
   spaceId: string;
@@ -12,30 +12,31 @@ export const CreateChannelButton: React.FC<Props> = ({ spaceId, refetch }) => {
   const joinedMap = useJoinedMap();
   const me = useMe();
   const joined = joinedMap.get(spaceId, null);
-  const [start, setStart] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
 
-  const handleCreate: ButtonHandler = () => {
-    setStart(true);
+  const openDialog = () => {
+    setShowDialog(true);
   };
 
-  const handleClose = () => {
-    setStart(false);
+  const closeDialog = () => {
+    setShowDialog(false);
     refetch();
   };
 
-  if (start && joined !== null) {
-    return <CreateChannelForm close={handleClose} spaceId={spaceId} />;
+  if (joined === null || me === null) {
+    return null;
+  }
+  const { space, member } = joined.space;
+  if (space.ownerId !== me.id && !member.isAdmin) {
+    return null;
   }
 
-  if (joined !== null) {
-    const { space, member } = joined.space;
-    if (space.ownerId === me?.id || member.isAdmin) {
-      return (
-        <button className="CreateChannelButton" onClick={handleCreate}>
-          创建频道
-        </button>
-      );
-    }
-  }
-  return null;
+  return (
+    <>
+      <CreateChannelDialog spaceId={space.id} isOpen={showDialog} close={closeDialog} />
+      <DefaultButton className="CreateChannelButton" onClick={openDialog}>
+        创建频道
+      </DefaultButton>
+    </>
+  );
 };

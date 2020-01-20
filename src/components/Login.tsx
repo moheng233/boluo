@@ -5,8 +5,8 @@ import { useDispatch, useMe } from './App';
 import { errorInfo, login as makeLogin } from '../state/actions';
 import { throwAppError } from '../helper/fetch';
 import { fetchJoined } from '../api/spaces';
-
-type InputChange = React.ChangeEventHandler<HTMLInputElement>;
+import { PrimaryButton, TextField } from 'office-ui-fabric-react';
+import { TextFieldOnChange } from '../types';
 
 interface Params {
   next?: string;
@@ -25,8 +25,8 @@ export const Login: React.FC = () => {
     return <Redirect to={redirectTo} />;
   }
 
-  const onUsernameChange: InputChange = e => setUsername(e.target.value);
-  const onPasswordChange: InputChange = e => setPassword(e.target.value);
+  const onUsernameChange: TextFieldOnChange = (e, value) => setUsername(value || '');
+  const onPasswordChange: TextFieldOnChange = (e, value) => setPassword(value || '');
 
   const isDisabled = [username, password].some(s => s.length === 0);
 
@@ -54,19 +54,9 @@ export const Login: React.FC = () => {
         <h1>登录</h1>
       </header>
       <form onSubmit={onSubmit} className="login-form">
-        <p className="field">
-          <label htmlFor="username">用户名</label>
-          <input id="username" value={username} onChange={onUsernameChange} />
-        </p>
-        <div className="field">
-          <label htmlFor="password">密码</label>
-          <input id="password" type="password" value={password} onChange={onPasswordChange} />
-        </div>
-        <div className="field">
-          <button className="submit" type="submit" disabled={isDisabled}>
-            登录
-          </button>
-        </div>
+        <TextField label="用户名" value={username} onChange={onUsernameChange} required />
+        <TextField label="密码" type="password" value={password} onChange={onPasswordChange} required />
+        <PrimaryButton text="登录" disabled={isDisabled} type="submit" />
       </form>
       <div className="no-account-yet">
         还没有菠萝菠萝账号？<Link to="/register">点这里注册吧</Link>。

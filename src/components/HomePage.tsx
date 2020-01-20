@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getMe } from '../api/users';
 import { getSpaceList, Space } from '../api/spaces';
 import { AppResult } from '../api/client';
 import { renderFetchResult, useFetch } from '../helper/fetch';
+import { PrimaryButton } from 'office-ui-fabric-react';
+import { CreateSpaceDialog } from './CreateSpaceDialog';
 
 const Intro: React.FC = () => {
   return (
@@ -58,14 +60,19 @@ const Spaces: React.FC = () => {
 
 export const HomePage: React.FC = () => {
   const me = getMe();
+  const [showCreateSpaceDialog, setShowCreateSpaceDialog] = useState(false);
+  const openCreateSpaceDialog = () => setShowCreateSpaceDialog(true);
+  const dismissCreateSpaceDialog = () => setShowCreateSpaceDialog(false);
+
   return (
     <div className="HomePage">
+      <CreateSpaceDialog show={showCreateSpaceDialog} dismiss={dismissCreateSpaceDialog} />
       {me === null ? <Intro /> : null}
       <div className="spaces">
         <h2>可达的位面</h2>
         <p>
           位面是组织你们的冒险的地方，如果要开始自己的冒险，加入一个位面或者
-          <Link to="/space/create">创造自己的位面</Link>。
+          <PrimaryButton onClick={openCreateSpaceDialog}>创造自己的位面</PrimaryButton>。
         </p>
         <Spaces />
       </div>

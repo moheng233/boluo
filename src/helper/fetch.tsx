@@ -1,4 +1,4 @@
-import { LOADING } from '../state/consts';
+import { LOADING } from '../consts';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { AppError, AppResult, errorHandle } from '../api/client';
 import { Redirect } from 'react-router-dom';

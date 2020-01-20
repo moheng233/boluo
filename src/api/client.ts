@@ -131,3 +131,7 @@ export const post = <T, U extends object = object>(
 export const get = <T>(path: string, query: Query = {}): Promise<AppResult<T>> => {
   return request(makePath(path, query), 'GET', null, false);
 };
+
+export const errorCodeIs = <T>(result: AppResult<T>, errorCode: string): boolean => {
+  return !result.ok && result.err.code === errorCode;
+};

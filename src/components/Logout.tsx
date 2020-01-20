@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { useDispatch, useMe } from './App';
 import { logout } from '../state/actions';
 import { get } from '../api/client';
+import { ProgressIndicator } from 'office-ui-fabric-react';
 
 export const Logout: React.FC = () => {
   const me = useMe();
@@ -20,9 +21,5 @@ export const Logout: React.FC = () => {
     return <Redirect to="/" />;
   }
 
-  return (
-    <div className="Logout">
-      <h1>登出中…</h1>
-    </div>
-  );
+  return <ProgressIndicator label="登出中" />;
 };

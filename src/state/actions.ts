@@ -9,7 +9,7 @@ import {
   LOGIN,
   LOGOUT,
   SUCCESS,
-} from './consts';
+} from '../consts';
 import { User } from '../api/users';
 import { Space, SpaceMember } from '../api/spaces';
 import { Joined } from './states';

@@ -1,6 +1,6 @@
 import { AppState, Joined } from './states';
 import { Action, Information, JoinChannel, LeaveSpace, LoadJoined, Login, Logout } from './actions';
-import { INFORMATION, JOIN_CHANNEL, JOIN_SPACE, LEAVE_SPACE, LOAD_JOINED, LOGIN, LOGOUT } from './consts';
+import { INFORMATION, JOIN_CHANNEL, JOIN_SPACE, LEAVE_SPACE, LOAD_JOINED, LOGIN, LOGOUT } from '../consts';
 import { clearMe, setMe } from '../api/users';
 import { clearCsrfToken } from '../api/client';
 import { Map } from 'immutable';

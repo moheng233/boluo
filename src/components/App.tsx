@@ -13,9 +13,17 @@ import { initAppState, Joined } from '../state/states';
 import { Action } from '../state/actions';
 import { User } from '../api/users';
 import { fetchJoined } from '../api/spaces';
-import { CreateSpacePage } from './CreateSpacePage';
 import { Dispatcher } from '../types';
 import { InformationList } from './InformationList';
+import { createTheme, Customizations } from 'office-ui-fabric-react';
+import { register } from './Icon';
+
+register();
+
+const theme = createTheme({
+  defaultFontStyle: { fontFamily: 'Lato, sans-serif' },
+});
+Customizations.applySettings({ theme });
 
 const DispatchContext = React.createContext<(action: Action) => void>(() => {});
 
@@ -71,10 +79,6 @@ export const App = () => {
 
                 <Route path="/logout">
                   <Logout />
-                </Route>
-
-                <Route path="/space/create">
-                  <CreateSpacePage />
                 </Route>
 
                 <Route path="/space/:id">
