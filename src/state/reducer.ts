@@ -1,32 +1,54 @@
-import { AppState, Joined } from './states';
-import { Action, Information, JoinChannel, LeaveSpace, LoadJoined, Login, Logout } from './actions';
-import { INFORMATION, JOIN_CHANNEL, JOIN_SPACE, LEAVE_SPACE, LOAD_JOINED, LOGIN, LOGOUT } from '../consts';
+import { AppState, JoinedSpace } from './states';
+import {
+  Action,
+  EditSpace,
+  Information,
+  JoinChannel,
+  LeaveChannel,
+  LeaveSpace,
+  LoadCache,
+  LoadJoined,
+  Login,
+  Logout,
+} from './actions';
+import {
+  EDIT_SPACE,
+  INFORMATION,
+  JOIN_CHANNEL,
+  JOIN_SPACE,
+  LEAVE_CHANNEL,
+  LEAVE_SPACE,
+  LOAD_CACHE,
+  LOAD_JOINED,
+  LOGIN,
+  LOGOUT,
+} from '../consts';
 import { clearMe, setMe } from '../api/users';
 import { clearCsrfToken } from '../api/client';
 import { Map } from 'immutable';
-import { JoinedSpace } from '../api/spaces';
+import { JoinedSpaceData } from '../api/spaces';
 
 const handleLoadJoined = (state: AppState, { joinedMap }: LoadJoined): AppState => {
-  return { ...state, joinedMap };
+  return { ...state, mySpaces: joinedMap };
 };
 
-const handleJoinSpace = (state: AppState, action: JoinedSpace): AppState => {
-  const joinedMap = state.joinedMap.set(action.space.id, {
-    space: action,
+const handleJoinSpace = (state: AppState, action: JoinedSpaceData): AppState => {
+  const mySpaces = state.mySpaces.set(action.space.id, {
+    ...action,
     channels: Map(),
   });
-  return { ...state, joinedMap };
+  return { ...state, mySpaces };
 };
 
 const handleLeaveSpace = (state: AppState, action: LeaveSpace): AppState => {
-  const joinedMap = state.joinedMap.remove(action.spaceId);
-  return { ...state, joinedMap };
+  const joinedMap = state.mySpaces.remove(action.spaceId);
+  return { ...state, mySpaces: joinedMap };
 };
 
 const handleLogout = (state: AppState, _: Logout): AppState => {
   clearMe();
   clearCsrfToken();
-  return { ...state, joinedMap: Map(), me: null };
+  return { ...state, mySpaces: Map(), me: null };
 };
 
 const handleLogin = (state: AppState, { user }: Login): AppState => {
@@ -43,14 +65,37 @@ const handleInformation = (state: AppState, action: Information): AppState => {
 
 const handleJoinChannel = (state: AppState, action: JoinChannel): AppState => {
   const { spaceId } = action.joined.channel;
-  let joinedMap = state.joinedMap;
-  const joined: Joined | null = state.joinedMap.get(spaceId, null);
-  if (joined !== null) {
-    const channels = joined.channels.set(action.joined.channel.id, action.joined);
-    joinedMap = joinedMap.set(spaceId, { ...joined, channels });
+  const joined: JoinedSpace | null = state.mySpaces.get(spaceId, null);
+  if (joined === null) {
+    return state;
   }
+  const channels = joined.channels.set(action.joined.channel.id, action.joined);
+  const mySpaces = state.mySpaces.set(spaceId, { ...joined, channels });
+  return { ...state, mySpaces };
+};
 
-  return { ...state, joinedMap };
+const handleLeaveChannel = (state: AppState, { spaceId, channelId }: LeaveChannel): AppState => {
+  const oldJoinedSpace = state.mySpaces.get(spaceId, null);
+  if (oldJoinedSpace === null) {
+    return state;
+  }
+  const channels = oldJoinedSpace.channels.remove(channelId);
+  const mySpaces = state.mySpaces.set(spaceId, { ...oldJoinedSpace, channels });
+  return { ...state, mySpaces };
+};
+
+const handleEditSpace = (state: AppState, { space }: EditSpace): AppState => {
+  const joinedSpace = state.mySpaces.get(space.id, null);
+  if (joinedSpace === null) {
+    return state;
+  }
+  const mySpaces = state.mySpaces.set(space.id, { ...joinedSpace, space });
+  return { ...state, mySpaces };
+};
+
+const handleLoadCache = (state: AppState, { id, value }: LoadCache): AppState => {
+  const cache = state.cache.set(id, value);
+  return { ...state, cache };
 };
 
 export const appReducer = (state: AppState, action: Action): AppState => {
@@ -62,6 +107,8 @@ export const appReducer = (state: AppState, action: Action): AppState => {
       return handleLogout(state, action);
     case JOIN_SPACE:
       return handleJoinSpace(state, action);
+    case EDIT_SPACE:
+      return handleEditSpace(state, action);
     case LOAD_JOINED:
       return handleLoadJoined(state, action);
     case LEAVE_SPACE:
@@ -70,6 +117,10 @@ export const appReducer = (state: AppState, action: Action): AppState => {
       return handleInformation(state, action);
     case JOIN_CHANNEL:
       return handleJoinChannel(state, action);
+    case LEAVE_CHANNEL:
+      return handleLeaveChannel(state, action);
+    case LOAD_CACHE:
+      return handleLoadCache(state, action);
     default:
       console.log(action);
       return state;

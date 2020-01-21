@@ -27,5 +27,5 @@ export const InformationItem: React.FC<{ information: Information }> = ({ inform
 
 export const InformationList: React.FC<Props> = ({ informationList }) => {
   const list = informationList.map((information, index) => <InformationItem key={index} information={information} />);
-  return <div className="some-information">{list}</div>;
+  return <div className="InformationList">{list}</div>;
 };

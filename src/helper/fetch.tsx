@@ -1,44 +1,62 @@
 import { LOADING } from '../consts';
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
-import { AppError, AppResult, errorHandle } from '../api/client';
-import { Redirect } from 'react-router-dom';
+import React, { DependencyList, ReactElement, useCallback, useEffect, useState } from 'react';
+import { AppError, AppResult, errorText } from '../api/client';
 import { Dispatcher } from '../types';
 import { errorInfo } from '../state/actions';
+import { MessageBar, MessageBarType, Spinner, SpinnerSize } from 'office-ui-fabric-react';
 
-export const useFetch = <T,>(f: () => Promise<T>): [T | LOADING, () => void] => {
+export const useFetch = <T,>(f: () => Promise<T>, deps: DependencyList): [T | LOADING, () => void] => {
   const [result, setResult] = useState<T | LOADING>(LOADING);
   const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
     f().then(setResult);
-  }, [trigger]);
+  }, deps.concat(trigger));
 
-  const refetch = useCallback(() => setTrigger(!trigger), [trigger]);
+  const refetch = useCallback(() => {
+    setTrigger(!trigger);
+  }, deps.concat(trigger));
 
   return [result, refetch];
 };
 
-export const renderFetchResult = <T,>(
-  result: LOADING | AppResult<T>,
-  render: (value: T) => ReactElement,
-  loading?: ReactElement,
-  onError?: (err: AppError) => ReactElement | null
-): React.ReactElement => {
+export interface Render<T> {
+  className: string;
+  fetch: () => Promise<AppResult<T>>;
+  render: (value: T, refetch: () => void) => ReactElement | null;
+  onError?: (err: AppError) => ReactElement | null;
+  onLoading?: ReactElement;
+}
+
+export const useRender = <T,>(
+  { className, fetch, render, onError, onLoading }: Render<T>,
+  deps: DependencyList
+): React.ReactElement | null => {
+  const [result, refetch] = useFetch(fetch, deps);
+  let inner: ReactElement | null = null;
   if (result === LOADING) {
-    return loading ? loading : <p className="loading">载入中…</p>;
+    className += ' on-loading';
+    if (onLoading) {
+      inner = onLoading;
+    } else {
+      inner = <Spinner label="载入中…" size={SpinnerSize.medium} />;
+    }
   } else if (result.ok) {
-    return render(result.some);
-  }
-  if (onError) {
-    const errorElement = onError(result.err);
-    if (errorElement) {
-      return errorElement;
+    className += ' on-success';
+    inner = render(result.some, refetch);
+  } else if (!result.ok) {
+    className += ' on-error';
+    if (onError) {
+      inner = onError(result.err);
+    } else {
+      inner = (
+        <MessageBar messageBarType={MessageBarType.error} isMultiline>
+          {errorText(result.err)}
+        </MessageBar>
+      );
     }
   }
-  if (result.err.code === 'UNAUTHENTICATED') {
-    return <Redirect to="/login" />;
-  }
-  return <div className="app-error">{errorHandle(result.err)}</div>;
+  return <div className={className}>{inner}</div>;
 };
 
 export const throwAppError = <T,>(dispatch: Dispatcher, result: AppResult<T>): Promise<T> =>
@@ -46,7 +64,7 @@ export const throwAppError = <T,>(dispatch: Dispatcher, result: AppResult<T>): P
     if (result.ok) {
       resolve(result.some);
     } else {
-      dispatch(errorInfo(errorHandle(result.err)));
+      dispatch(errorInfo(errorText(result.err)));
       reject(result.err);
     }
   });

@@ -1,11 +1,13 @@
 export interface Ok<T> {
   ok: true;
   some: T;
+  err?: undefined;
 }
 
 export interface Err<E> {
   ok: false;
   err: E;
+  some?: undefined;
 }
 
 export type Result<T, E> = Ok<T> | Err<E>;

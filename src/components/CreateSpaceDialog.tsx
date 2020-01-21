@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { DefaultButton, Dialog, DialogContent, DialogFooter, PrimaryButton, TextField } from 'office-ui-fabric-react';
 import { TextFieldOnChange } from '../types';
-import { checkName } from '../validators';
+import { checkDisplayName, getErrorMessage } from '../validators';
 import { AppResult, errorCodeIs, post } from '../api/client';
-import { CreateSpace, JoinedSpace } from '../api/spaces';
+import { CreateSpace, JoinedSpaceData } from '../api/spaces';
 import { JoinSpace } from '../state/actions';
-import { JOIN_SPACE } from '../consts';
+import { CONFLICT, JOIN_SPACE } from '../consts';
 import { useDispatch } from './App';
 import { throwAppError } from '../helper/fetch';
 import { useHistory } from 'react-router-dom';
@@ -23,21 +23,17 @@ export const CreateSpaceDialog: React.FC<Props> = ({ show, dismiss }) => {
 
   const handleName: TextFieldOnChange = (_, value) => {
     value = value || '';
-    const checkResult = checkName(value);
-    if (!checkResult.ok) {
-      setNameError(checkResult.err);
-    } else {
-      setNameError('');
-    }
+    const checkResult = checkDisplayName(value);
+    setNameError(getErrorMessage(checkResult));
     setName(value);
   };
 
   const handleSubmit = async () => {
-    const result: AppResult<JoinedSpace> = await post<JoinedSpace, CreateSpace>('/spaces/create', {
+    const result: AppResult<JoinedSpaceData> = await post<JoinedSpaceData, CreateSpace>('/spaces/create', {
       name,
       password: null,
     });
-    if (errorCodeIs(result, 'ALREADY_EXISTS')) {
+    if (errorCodeIs(result, CONFLICT)) {
       setNameError('叫做这个名字的位面已经存在了');
       return;
     }

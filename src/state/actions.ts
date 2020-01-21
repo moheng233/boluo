@@ -1,10 +1,13 @@
 import {
+  EDIT_SPACE,
   ERROR,
   INFO,
   INFORMATION,
   JOIN_CHANNEL,
   JOIN_SPACE,
+  LEAVE_CHANNEL,
   LEAVE_SPACE,
+  LOAD_CACHE,
   LOAD_JOINED,
   LOGIN,
   LOGOUT,
@@ -12,11 +15,21 @@ import {
 } from '../consts';
 import { User } from '../api/users';
 import { Space, SpaceMember } from '../api/spaces';
-import { Joined } from './states';
+import { JoinedSpace } from './states';
 import { Map } from 'immutable';
-import { JoinedChannel } from '../api/channels';
+import { JoinedChannelData } from '../api/channels';
 
-export type Action = Login | Logout | JoinSpace | LoadJoined | LeaveSpace | Information | JoinChannel;
+export type Action =
+  | Login
+  | Logout
+  | JoinSpace
+  | LoadJoined
+  | LeaveSpace
+  | Information
+  | JoinChannel
+  | LeaveChannel
+  | LoadCache
+  | EditSpace;
 
 export interface Login {
   tag: LOGIN;
@@ -39,16 +52,27 @@ export interface JoinSpace {
 
 export const joinSpace = (space: Space, member: SpaceMember): JoinSpace => ({ tag: JOIN_SPACE, space, member });
 
-export interface LoadJoined {
-  tag: LOAD_JOINED;
-  joinedMap: Map<string, Joined>;
+export interface EditSpace {
+  tag: EDIT_SPACE;
+  space: Space;
 }
 
-export const loadJoined = (joinedMap: Map<string, Joined>): LoadJoined => ({ tag: LOAD_JOINED, joinedMap });
+export interface LoadJoined {
+  tag: LOAD_JOINED;
+  joinedMap: Map<string, JoinedSpace>;
+}
+
+export const loadJoined = (joinedMap: Map<string, JoinedSpace>): LoadJoined => ({ tag: LOAD_JOINED, joinedMap });
 
 export interface LeaveSpace {
   tag: LEAVE_SPACE;
   spaceId: string;
+}
+
+export interface LeaveChannel {
+  tag: LEAVE_CHANNEL;
+  spaceId: string;
+  channelId: string;
 }
 
 export interface Information {
@@ -65,5 +89,11 @@ export const info = (message: string): Information => ({ tag: INFORMATION, level
 
 export interface JoinChannel {
   tag: JOIN_CHANNEL;
-  joined: JoinedChannel;
+  joined: JoinedChannelData;
+}
+
+export interface LoadCache {
+  tag: LOAD_CACHE;
+  id: string;
+  value: unknown;
 }

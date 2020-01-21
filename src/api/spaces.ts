@@ -1,7 +1,7 @@
 import { AppResult, get, post } from './client';
 import { Dispatcher } from '../types';
-import { Channel, JoinedChannel, joinedChannels } from './channels';
-import { Joined } from '../state/states';
+import { Channel, JoinedChannelData, joinedChannels } from './channels';
+import { JoinedSpace } from '../state/states';
 import { Map } from 'immutable';
 import { loadJoined } from '../state/actions';
 
@@ -24,7 +24,7 @@ export interface SpaceMember {
   joinDate: string;
 }
 
-export interface JoinedSpace {
+export interface JoinedSpaceData {
   space: Space;
   member: SpaceMember;
 }
@@ -34,9 +34,10 @@ export interface CreateSpace {
   password: string | null;
 }
 
-export interface EditSpace {
+export interface EditSpaceData {
   spaceId: string;
-  name: string;
+  name?: string;
+  description?: string;
 }
 
 export interface SpaceWithRelated {
@@ -54,7 +55,7 @@ export const querySpaceWithRelated = (id: string): Promise<AppResult<SpaceWithRe
 
 export const joinSpace = (id: string): Promise<AppResult<SpaceMember>> => post('/spaces/join', {}, { id });
 
-export const joinedSpaces = (): Promise<AppResult<JoinedSpace[]>> => get<JoinedSpace[]>('/spaces/my');
+export const joinedSpaces = (): Promise<AppResult<JoinedSpaceData[]>> => get<JoinedSpaceData[]>('/spaces/my');
 
 export const leaveSpace = (id: string): Promise<AppResult<true>> => post<true>('/spaces/leave', {}, { id });
 
@@ -64,16 +65,16 @@ export const fetchJoined = async (dispatch: Dispatcher) => {
   if (spaceResult.ok && channelResult.ok) {
     const joinedSpaces = spaceResult.some;
     const joinedChannels = channelResult.some;
-    let joinedMap: Map<string, Joined> = Map();
+    let joinedMap: Map<string, JoinedSpace> = Map();
     for (const joinedSpace of joinedSpaces) {
-      let joinedChannelMap: Map<string, JoinedChannel> = Map();
+      let joinedChannelMap: Map<string, JoinedChannelData> = Map();
       for (const joinedChannel of joinedChannels) {
         if (joinedChannel.channel.spaceId === joinedSpace.space.id) {
           joinedChannelMap = joinedChannelMap.set(joinedChannel.channel.id, joinedChannel);
         }
       }
       joinedMap = joinedMap.set(joinedSpace.space.id, {
-        space: joinedSpace,
+        ...joinedSpace,
         channels: joinedChannelMap,
       });
     }

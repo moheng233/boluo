@@ -21,11 +21,17 @@ export interface ChannelMember {
   joinDate: string;
   characterName: string;
   isMaster: boolean;
+  textColor: string;
 }
 
-export interface JoinedChannel {
+export interface JoinedChannelData {
   channel: Channel;
   member: ChannelMember;
+}
+
+export interface JoinChannel {
+  channelId: string;
+  characterName?: string;
 }
 
 export interface ChannelWithRelated {
@@ -39,4 +45,4 @@ export interface EditChannel {
   name: string;
 }
 
-export const joinedChannels = (): Promise<AppResult<JoinedChannel[]>> => get<JoinedChannel[]>('/channels/my');
+export const joinedChannels = (): Promise<AppResult<JoinedChannelData[]>> => get<JoinedChannelData[]>('/channels/my');

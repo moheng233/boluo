@@ -4,7 +4,6 @@ import { login } from '../api/users';
 import { useDispatch, useMe } from './App';
 import { errorInfo, login as makeLogin } from '../state/actions';
 import { throwAppError } from '../helper/fetch';
-import { fetchJoined } from '../api/spaces';
 import { PrimaryButton, TextField } from 'office-ui-fabric-react';
 import { TextFieldOnChange } from '../types';
 
@@ -42,7 +41,6 @@ export const Login: React.FC = () => {
     }
     const me = await throwAppError(dispatch, meResult);
     dispatch(makeLogin(me.user));
-    await fetchJoined(dispatch);
   };
 
   return (

@@ -1,26 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { User } from '../api/users';
-import { Link, Switch, Route } from 'react-router-dom';
-import { useJoinedMap, useMe } from './App';
+import { Link, Switch, Route, useHistory } from 'react-router-dom';
+import { useMySpaces, useMe, useDispatch } from './App';
+import { fetchJoined } from '../api/spaces';
+import './Sidebar.scss';
+import { SidebarSpace } from './SidebarSpace';
+import { CommandBarButton, IContextualMenuProps } from 'office-ui-fabric-react';
 
 const LoggedIn: React.FC<{ me: User }> = ({ me }) => {
-  const joinedMap = useJoinedMap();
-  const joined = joinedMap.toList().map((joined, key) => {
-    const joinedChannels = joined.channels.toList().map(({ channel }, key) => <li key={key}>{channel.name}</li>);
-    return (
-      <li key={key}>
-        {joined.space.space.name}
-        <ul>{joinedChannels}</ul>
-      </li>
-    );
-  });
+  const history = useHistory();
+  const mySpaces = useMySpaces();
+
+  const spaceList = mySpaces.toList().map(mySpace => <SidebarSpace key={mySpace.space.id} mySpace={mySpace} />);
+
+  const menuProps: IContextualMenuProps = {
+    items: [
+      {
+        key: 'logout',
+        text: '登出',
+        iconProps: { iconName: 'logout' },
+        onClick: () => history.push('/logout'),
+      },
+      {
+        key: 'home',
+        text: '首页',
+        iconProps: { iconName: 'home' },
+        onClick: () => history.push('/'),
+      },
+    ],
+  };
   return (
     <div className="Sidebar logged-in">
-      <div className="user">
-        <span className="nickname">{me.nickname}</span>
-        <Link to="/logout">登出</Link>
+      <div className="sidebar-header">
+        <CommandBarButton
+          className="sidebar-header-button"
+          text={me.nickname}
+          iconProps={{ iconName: 'bars' }}
+          menuProps={menuProps}
+        />
       </div>
-      <ul className="joined">{joined}</ul>
+      <div className="joined-list">{spaceList}</div>
     </div>
   );
 };
@@ -41,6 +60,14 @@ const NotLoggedIn: React.FC = () => {
 
 export const Sidebar: React.FC = () => {
   const me = useMe();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (me) {
+      fetchJoined(dispatch);
+    }
+  }, [me]);
+
   const sidebar = me === null ? <NotLoggedIn /> : <LoggedIn me={me} />;
   return (
     <Switch>

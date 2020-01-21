@@ -1,0 +1,55 @@
+@import '../styles/variables';
+
+.Sidebar {
+  width: 10rem;
+  font-size: $sidebar-font-size;
+  height: 100vh;
+  flex-grow: 0;
+  flex-shrink: 0;
+  overflow-y: scroll;
+  border-right: 1px solid $sidebar-border;
+  background-color: $sidebar-background;
+  .joined-list {
+    a {
+      display: inline-block;
+      width: 100%;
+      padding: 0.3rem 0.4rem;
+      text-decoration: none;
+      color: $sidebar-item-color;
+
+      &:hover {
+        background-color: darken($sidebar-background, 10%);
+      }
+    }
+  }
+
+  .SidebarChannelItem {
+    a::before {
+      content: '#';
+      color: darken($sidebar-background, 20%);
+      margin-right: 0.3em;
+    }
+  }
+
+  .SidebarSpace {
+    .space-item {
+      a {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .sidebar-header {
+    background-color: $white;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $sidebar-border;
+
+    .sidebar-header-button {
+      width: 100%;
+      height: 2.5rem;
+      font-size: 1.3rem;
+      text-align: left;
+    }
+  }
+}

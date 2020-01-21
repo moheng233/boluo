@@ -6,6 +6,14 @@ const ok = Result.Ok(undefined);
 
 export type ValidatorResult = Result<undefined, string>;
 
+export const getErrorMessage = (result: ValidatorResult): string => {
+  if (result.ok) {
+    return '';
+  } else {
+    return result.err;
+  }
+};
+
 export function checkEmailFormat(email: string): ValidatorResult {
   // tslint:disable-next-line:max-line-length
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -16,21 +24,21 @@ export function checkEmailFormat(email: string): ValidatorResult {
   }
 }
 
-export function checkUsername(username: string): ValidatorResult {
+export function checkName(username: string): ValidatorResult {
   if (!/^[\w_\d]+$/.test(username)) {
-    return Err('Username can only contain letters, "_" and numbers.');
+    return Err('Name can only contain letters, "_" and numbers.');
   } else if (username.length < 3) {
-    return Err('Username must be at least 3 characters.');
+    return Err('Name must be at least 3 characters.');
   } else if (username.length > 32) {
-    return Err('Username must be at most 32 characters.');
+    return Err('Name must be at most 32 characters.');
   }
   return ok;
 }
 
-export function checkName(nickname: string): ValidatorResult {
+export function checkDisplayName(nickname: string): ValidatorResult {
   const NAME_MAX_LENGTH = 32;
-  if (nickname.length === 0) {
-    return Err('Empty name.');
+  if (nickname.length < 2) {
+    return Err('Name length shall not be less than 2.\n');
   } else if (nickname.length > NAME_MAX_LENGTH) {
     return Err(`Name must be less than ${NAME_MAX_LENGTH} characters.`);
   }
@@ -41,17 +49,6 @@ export function checkPassword(password: string): ValidatorResult {
   const MIN_PASSWORD_LENGTH = 8;
   if (password.length < MIN_PASSWORD_LENGTH) {
     return Err(`Password must have at least ${MIN_PASSWORD_LENGTH} characters.`);
-  }
-  return ok;
-}
-
-export function checkChannelName(name: string): ValidatorResult {
-  if (name.length < 2) {
-    return Err('Channel name must be at least 2 characters.');
-  } else if (name.length > 32) {
-    return Err('Channel name must be at most 32 characters.');
-  } else if (name.match(/\s/)) {
-    return Err('Channel name cannot contain spaces.');
   }
   return ok;
 }

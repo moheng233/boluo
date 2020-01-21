@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { renderFetchResult, useFetch } from '../helper/fetch';
+import { useRender } from '../helper/fetch';
 import { querySpaceWithRelated } from '../api/spaces';
 import { Channel } from '../api/channels';
 import { JoinOrLeaveSpaceButton } from './JoinOrLeaveSpaceButton';
-import { CreateChannelButton } from './CreateChannelButton';
 import { useMe } from './App';
+import { ManageSpace } from './ManageSpace';
 
 interface Props {}
 
@@ -24,20 +24,27 @@ const ChannelItem: React.FC<{ channel: Channel }> = ({ channel }) => {
 export const SpacePage: React.FC<Props> = () => {
   const { id } = useParams<Params>();
   const me = useMe();
-  const [result, refetch] = useFetch(async () => querySpaceWithRelated(id));
-
-  return renderFetchResult(result, ({ space, channels }) => {
-    const channelList = channels.map(channel => <ChannelItem key={channel.id} channel={channel} />);
-    return (
-      <div className="SpacePage">
-        <div className="space-info">
-          <h1 className="space-id">{space.name}</h1>
-          <p className="description">{space.description}</p>
-          {me === null ? null : <CreateChannelButton spaceId={space.id} refetch={refetch} />}
-          {me === null ? null : <JoinOrLeaveSpaceButton space={space} />}
-        </div>
-        <ul className="space-channels">{channelList}</ul>
-      </div>
-    );
-  });
+  return useRender(
+    {
+      className: 'SpacePage',
+      fetch: () => querySpaceWithRelated(id),
+      render: ({ space, channels }, refetch) => {
+        const channelList = channels.map(channel => <ChannelItem key={channel.id} channel={channel} />);
+        return (
+          <div className="SpacePage">
+            <div className="space-info">
+              <h1 className="space-id">
+                {space.name}
+                {me === null ? null : <JoinOrLeaveSpaceButton space={space} />}
+              </h1>
+              <p className="description">{space.description}</p>
+              <ManageSpace space={space} refetch={refetch} />
+            </div>
+            <ul className="space-channels">{channelList}</ul>
+          </div>
+        );
+      },
+    },
+    [id]
+  );
 };

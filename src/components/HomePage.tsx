@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getMe } from '../api/users';
 import { getSpaceList, Space } from '../api/spaces';
-import { AppResult } from '../api/client';
-import { renderFetchResult, useFetch } from '../helper/fetch';
+import { useRender } from '../helper/fetch';
 import { PrimaryButton } from 'office-ui-fabric-react';
 import { CreateSpaceDialog } from './CreateSpaceDialog';
 
@@ -51,11 +50,17 @@ const SpaceItem: React.FC<{ space: Space }> = ({ space }) => {
 };
 
 const Spaces: React.FC = () => {
-  const [result] = useFetch<AppResult<Space[]>>(getSpaceList);
-  return renderFetchResult(result, spaces => {
-    const spaceList = spaces.map(space => <SpaceItem key={space.id} space={space} />);
-    return <ul className="Spaces">{spaceList}</ul>;
-  });
+  return useRender(
+    {
+      className: 'Spaces',
+      fetch: getSpaceList,
+      render: spaces => {
+        const spaceList = spaces.map(space => <SpaceItem key={space.id} space={space} />);
+        return <ul className="Spaces">{spaceList}</ul>;
+      },
+    },
+    []
+  );
 };
 
 export const HomePage: React.FC = () => {
@@ -70,10 +75,11 @@ export const HomePage: React.FC = () => {
       {me === null ? <Intro /> : null}
       <div className="spaces">
         <h2>可达的位面</h2>
-        <p>
-          位面是组织你们的冒险的地方，如果要开始自己的冒险，加入一个位面或者
-          <PrimaryButton onClick={openCreateSpaceDialog}>创造自己的位面</PrimaryButton>。
-        </p>
+        {me === null ? null : (
+          <PrimaryButton iconProps={{ iconName: 'create' }} onClick={openCreateSpaceDialog}>
+            创造自己的位面
+          </PrimaryButton>
+        )}
         <Spaces />
       </div>
     </div>

@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+}
+
+.App {
+  display: flex;
+
+  .main {
+    height: 100vh;
+    overflow-y: scroll;
+  }
+}

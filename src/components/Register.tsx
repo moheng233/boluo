@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useHistory, Redirect } from 'react-router-dom';
-import { checkEmailFormat, checkName, checkPassword, checkUsername, ValidatorResult } from '../validators';
+import { Link, Redirect, useHistory } from 'react-router-dom';
+import { checkDisplayName, checkEmailFormat, checkName, checkPassword, ValidatorResult } from '../validators';
 import { TextFieldOnChange } from '../types';
 import { register } from '../api/users';
 import { useDispatch, useMe } from './App';
 import { PrimaryButton, TextField } from 'office-ui-fabric-react';
 import { errorInfo } from '../state/actions';
 import { throwAppError } from '../helper/fetch';
+import { CONFLICT, VALIDATION_FAIL } from '../consts';
 
 const handlerMaker = (
   setValue: (value: string) => void,
@@ -44,11 +45,11 @@ export const Register: React.FC = () => {
     return <Redirect to="/" />;
   }
 
-  const usernameHandler: TextFieldOnChange = handlerMaker(setUsername, setUsernameError, checkUsername);
+  const usernameHandler: TextFieldOnChange = handlerMaker(setUsername, setUsernameError, checkName);
 
   const emailHandler: TextFieldOnChange = handlerMaker(setEmail, setEmailError, checkEmailFormat);
 
-  const nicknameHandler: TextFieldOnChange = handlerMaker(setNickname, setNicknameError, checkName);
+  const nicknameHandler: TextFieldOnChange = handlerMaker(setNickname, setNicknameError, checkDisplayName);
 
   const passwordHandler: TextFieldOnChange = handlerMaker(setPassword, setPasswordError, checkPassword);
 
@@ -80,9 +81,9 @@ export const Register: React.FC = () => {
       history.push('/login');
     } else {
       const { err } = registerResult;
-      if (err.code === 'ALREADY_EXISTS') {
+      if (err.code === CONFLICT) {
         dispatch(errorInfo('已经存在这个用户名或者邮箱，也许您注册过了？'));
-      } else if (err.code === 'VALIDATION_FAIL') {
+      } else if (err.code === VALIDATION_FAIL) {
         dispatch(errorInfo(err.message));
       } else {
         await throwAppError(dispatch, registerResult);

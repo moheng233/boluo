@@ -38,11 +38,11 @@ export interface Preview {
 }
 
 export interface NewMessage {
-  messageId?: string;
-  channelId?: string;
-  name?: string;
+  messageId: string;
+  channelId: string;
+  name: string;
   text: string;
-  entitles: object;
+  entities: unknown[];
   inGame: boolean;
   isAction: boolean;
 }

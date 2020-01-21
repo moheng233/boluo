@@ -1,34 +1,52 @@
-import { Result } from '../result';
-import { clearMe } from './users';
+import { Err, Result } from '../result';
+import {
+  BAD_REQUEST,
+  ErrorCode,
+  FETCH_FAIL,
+  NO_PERMISSION,
+  NOT_JSON,
+  UNAUTHENTICATED,
+  UNEXPECTED,
+  VALIDATION_FAIL,
+} from '../consts';
 
 export interface AppError {
-  code: string;
+  code: ErrorCode;
   message: string;
+  table: string | null;
 }
 
 const notJson: AppError = {
   code: 'NOT_JSON',
   message: 'The response body is not JSON',
+  table: null,
 };
 
-export const errorHandle = (e: AppError): string => {
+export const fetchFail: AppError = {
+  code: FETCH_FAIL,
+  message: 'HTTP request failed',
+  table: null,
+};
+
+export const errorText = (e: AppError): string => {
   switch (e.code) {
-    case 'UNAUTHENTICATED':
-      clearMe();
-      clearCsrfToken();
-      window.setTimeout(() => (window.location.pathname = '/login'), 3000);
-      return '页面需要登录，你将跳转到登录页面';
-    case 'NO_PERMISSION':
-      return '你没有访问权限';
-    case 'NOT_JSON':
+    case UNAUTHENTICATED:
+      return '认证失败，需要登录';
+    case NO_PERMISSION:
+      return '您没有访问权限';
+    case VALIDATION_FAIL:
+      return `您的输入有误：${e.message}`;
+    case FETCH_FAIL:
+      return `遭遇到未知的网络错误`;
+    case NOT_JSON:
       return '搞砸了! 服务器返回的消息格式有误，可能是服务器或者您的网络故障';
-    case 'UNEXPECTED':
+    case UNEXPECTED:
       return 'Oops! 服务器内部错误';
-    case 'BAD_REQUEST':
-      return '出错了! 请求格式有误';
+    case BAD_REQUEST:
+      return `出错了! 请求格式有误: ${e.message}`;
     default:
       console.warn(e);
-      return '发生了一个本该处理但未处理的错误';
+      return `发生了一个本该处理但未处理的错误: ${e.message}`;
   }
 };
 
@@ -132,6 +150,6 @@ export const get = <T>(path: string, query: Query = {}): Promise<AppResult<T>> =
   return request(makePath(path, query), 'GET', null, false);
 };
 
-export const errorCodeIs = <T>(result: AppResult<T>, errorCode: string): boolean => {
+export function errorCodeIs<T>(result: AppResult<T>, errorCode: ErrorCode): boolean {
   return !result.ok && result.err.code === errorCode;
-};
+}
