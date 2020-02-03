@@ -1,0 +1,29 @@
+@import '../styles/variables';
+
+.SpacePage {
+  .space-info {
+    padding: 0.3em 0.5em;
+    font-size: 92%;
+  }
+
+  .space-channels {
+    padding: 0;
+    list-style-type: none;
+
+    li {
+      &:first-child {
+        border-top: 1px solid $space-channel-color;
+      }
+      a {
+        font-size: 120%;
+        padding: 0.4em 1em;
+        text-decoration: none;
+        display: block;
+        border-bottom: 1px solid $space-channel-color;
+        &:hover {
+          background-color: $space-channel-color;
+        }
+      }
+    }
+  }
+}

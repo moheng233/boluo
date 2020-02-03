@@ -1,0 +1,22 @@
+@import '../styles/variables';
+
+.ChannelPage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  .message-list {
+    height: 100%;
+    overflow: scroll;
+    padding-top: 1rem;
+  }
+
+  .channel-header {
+  }
+
+  .channel-name {
+    font-weight: bold;
+  }
+  .channel-operators {
+  }
+}

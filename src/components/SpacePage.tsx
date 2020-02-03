@@ -6,6 +6,7 @@ import { Channel } from '../api/channels';
 import { JoinOrLeaveSpaceButton } from './JoinOrLeaveSpaceButton';
 import { useMe } from './App';
 import { ManageSpace } from './ManageSpace';
+import './SpacePage.scss';
 
 interface Props {}
 
@@ -31,17 +32,17 @@ export const SpacePage: React.FC<Props> = () => {
       render: ({ space, channels }, refetch) => {
         const channelList = channels.map(channel => <ChannelItem key={channel.id} channel={channel} />);
         return (
-          <div className="SpacePage">
+          <>
+            <div className="main-header space-header">
+              <div className="space-id">{space.name}</div>
+              {me === null ? null : <JoinOrLeaveSpaceButton space={space} />}
+            </div>
             <div className="space-info">
-              <h1 className="space-id">
-                {space.name}
-                {me === null ? null : <JoinOrLeaveSpaceButton space={space} />}
-              </h1>
               <p className="description">{space.description}</p>
               <ManageSpace space={space} refetch={refetch} />
             </div>
             <ul className="space-channels">{channelList}</ul>
-          </div>
+          </>
         );
       },
     },

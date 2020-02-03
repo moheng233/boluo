@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useRender } from '../helper/fetch';
 import { get } from '../api/client';
@@ -7,6 +7,7 @@ import { JoinOrLeaveChannelButton } from './JoinOrLeaveChannelButton';
 import { MessageInputArea } from './MessageInputArea';
 import { useMySpaces } from './App';
 import { MessageList } from './MessageList';
+import './ChannelPage.scss';
 
 interface Props {}
 
@@ -21,19 +22,23 @@ export const ChannelPage: React.FC<Props> = () => {
     {
       className: 'ChannelPage',
       fetch: () => get<ChannelWithRelated>('/channels/query_with_related', { id }),
-      render: ({ channel, space, members }, refetch) => {
+      render: ({ channel, space }) => {
         const joinedSpace = mySpaces.get(space.id);
         const member = joinedSpace?.channels.get(channel.id)?.member;
 
         return (
-          <div className="ChannelPage">
-            <h1>
-              {channel.name}
-              <JoinOrLeaveChannelButton channel={channel} />
-            </h1>
-            <MessageList channelId={channel.id} />
-            {member ? <MessageInputArea channel={channel} member={member} /> : null}
-          </div>
+          <>
+            <div className="channel-header main-header">
+              <div className="channel-name">{channel.name}</div>
+              <div className="channel-operators">
+                <JoinOrLeaveChannelButton channel={channel} />
+              </div>
+            </div>
+            <div className="message-list">
+              <MessageList channelId={channel.id} />
+            </div>
+            <div className="input-area">{member ? <MessageInputArea channel={channel} member={member} /> : null}</div>
+          </>
         );
       },
     },

@@ -1,12 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { Channel, ChannelMember } from '../api/channels';
-import { TextField, Stack, CommandBar, IconButton } from 'office-ui-fabric-react';
+import { TextField, Stack, CommandBar } from 'office-ui-fabric-react';
 import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/components/CommandBar/CommandBar.types';
 import { TextFieldOnChange } from '../types';
 import { post } from '../api/client';
 import { Message, NewMessage } from '../api/messages';
 import { newId } from '../utils';
 import { useMe } from './App';
+import './MessageInputArea.scss';
 
 interface Props {
   channel: Channel;
@@ -28,6 +29,13 @@ export const MessageInputArea: React.FC<Props> = ({ channel, member }) => {
 
   const handleText: TextFieldOnChange = (_, value) => {
     setText(value ?? '');
+  };
+
+  const handleKey: React.KeyboardEventHandler = e => {
+    if (e.metaKey && e.keyCode === 13) {
+      e.preventDefault();
+      handleSend();
+    }
   };
 
   const handleCharacterName: TextFieldOnChange = (_, value) => {
@@ -79,7 +87,7 @@ export const MessageInputArea: React.FC<Props> = ({ channel, member }) => {
     },
   ];
 
-  const canSend = text.trim().length > 0 && name.length > 0;
+  const canSend = text.trim().length > 0 && (!inGame || name.length > 0);
 
   const farItems: ICommandBarItemProps[] = [
     {
@@ -96,21 +104,21 @@ export const MessageInputArea: React.FC<Props> = ({ channel, member }) => {
   ];
 
   return (
-    <div>
+    <div className="MessageInputArea">
       <Stack horizontal>
         <Stack.Item align="end">
           <Stack horizontal>
-            <Stack.Item align="end">
+            <Stack.Item align="center">
               <TextField
                 label="名字"
+                className="name-text-field"
+                inputClassName="name-input"
                 value={inGame ? name : me.nickname}
                 onChange={handleCharacterName}
                 disabled={!inGame}
+                underlined
                 required
               />
-            </Stack.Item>
-            <Stack.Item align="end">
-              <IconButton iconProps={{ iconName: 'history' }} />
             </Stack.Item>
           </Stack>
         </Stack.Item>
@@ -118,7 +126,18 @@ export const MessageInputArea: React.FC<Props> = ({ channel, member }) => {
           <CommandBar items={items} farItems={farItems} />
         </Stack.Item>
       </Stack>
-      <TextField value={text} onChange={handleText} multiline />
+      <TextField
+        className="message-text-field"
+        inputClassName="message-input"
+        value={text}
+        onChange={handleText}
+        onKeyDown={handleKey}
+        placeholder="在这里说点什么吧..."
+        multiline
+        autoAdjustHeight
+        resizable={false}
+        borderless
+      />
     </div>
   );
 };

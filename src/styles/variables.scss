@@ -8,7 +8,14 @@ $platinum: #e5e5e5;
 $white: #ffffff;
 $warn: #ffb3b3;
 
+$link-color: darken($tangerine, 20%);
+
 $sidebar-font-size: 14px;
 $sidebar-background: #f4f4f4;
 $sidebar-item-color: darken($sidebar-background, 70%);
 $sidebar-border: darken($sidebar-background, 15%);
+$header-height: 3rem;
+
+$space-channel-color: darken($sidebar-background, 10%);
+
+$action-name-color: $grey;

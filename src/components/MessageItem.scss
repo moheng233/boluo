@@ -1,0 +1,55 @@
+@import '../styles/variables';
+
+.MessageItem {
+  padding: 0.2em 0.8rem;
+  display: flex;
+  align-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: lighten($grey, 40%);
+  }
+
+  .name {
+    display: inline-block;
+    flex-shrink: 0;
+    font-weight: bold;
+    width: 8rem;
+    text-align: right;
+    padding: 0.4em 0.4rem;
+    &::after {
+      content: ':';
+      margin-right: 0.4rem;
+    }
+  }
+  .text {
+    display: inline;
+  }
+}
+
+.action-message {
+  .name {
+    color: $action-name-color;
+    &::before {
+      content: '[';
+    }
+    &::after {
+      content: ']';
+    }
+  }
+  .text {
+    font-style: italic;
+  }
+}
+
+.ooc-message {
+  background-color: $black;
+  color: $white;
+  font-size: 85%;
+
+  &:hover {
+    background-color: lighten($black, 20%);
+  }
+  .name {
+  }
+}
