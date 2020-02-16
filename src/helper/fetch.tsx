@@ -7,15 +7,14 @@ import { MessageBar, MessageBarType, Spinner, SpinnerSize } from 'office-ui-fabr
 
 export const useFetch = <T,>(f: () => Promise<T>, deps: DependencyList): [T | LOADING, () => void] => {
   const [result, setResult] = useState<T | LOADING>(LOADING);
-  const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
     f().then(setResult);
-  }, deps.concat(trigger));
+  }, deps);
 
   const refetch = useCallback(() => {
-    setTrigger(!trigger);
-  }, deps.concat(trigger));
+    f().then(setResult);
+  }, deps);
 
   return [result, refetch];
 };

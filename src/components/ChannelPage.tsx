@@ -34,9 +34,7 @@ export const ChannelPage: React.FC<Props> = () => {
                 <JoinOrLeaveChannelButton channel={channel} />
               </div>
             </div>
-            <div className="message-list">
-              <MessageList channelId={channel.id} />
-            </div>
+            <MessageList channelId={channel.id} />
             <div className="input-area">{member ? <MessageInputArea channel={channel} member={member} /> : null}</div>
           </>
         );

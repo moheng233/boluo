@@ -4,10 +4,11 @@ import { TextField, Stack, CommandBar } from 'office-ui-fabric-react';
 import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/components/CommandBar/CommandBar.types';
 import { TextFieldOnChange } from '../types';
 import { post } from '../api/client';
-import { Message, NewMessage } from '../api/messages';
+import { Message, NewMessage, Preview } from '../api/messages';
 import { newId } from '../utils';
 import { useMe } from './App';
 import './MessageInputArea.scss';
+import { parse } from '../parser';
 
 interface Props {
   channel: Channel;
@@ -16,12 +17,14 @@ interface Props {
 
 export const MessageInputArea: React.FC<Props> = ({ channel, member }) => {
   const me = useMe();
+  const inputting = useRef(false);
   const [text, setText] = useState('');
   const [name, setName] = useState(member.characterName);
   const [inGame, setInGame] = useState(true);
   const [isAction, setIsAction] = useState(false);
   const [broadcast, setBroadcast] = useState(true);
   const id = useRef<string>(newId());
+  const timeoutSendPreview: React.MutableRefObject<number | null> = useRef(null);
 
   if (me === null) {
     return null;
@@ -29,6 +32,32 @@ export const MessageInputArea: React.FC<Props> = ({ channel, member }) => {
 
   const handleText: TextFieldOnChange = (_, value) => {
     setText(value ?? '');
+    if (timeoutSendPreview.current !== null) {
+      window.clearTimeout(timeoutSendPreview.current);
+      timeoutSendPreview.current = null;
+    }
+    if (broadcast) {
+      timeoutSendPreview.current = window.setTimeout(async () => {
+        const { text: parsed, entities } = parse(value ?? '');
+        const preview: Preview = {
+          id: id.current,
+          senderId: me.id,
+          channelId: channel.id,
+          parentMessageId: null,
+          name: inGame ? name : me.nickname,
+          mediaId: null,
+          inGame,
+          isAction,
+          isMaster: false,
+          text: parsed,
+          whisperToUsers: null,
+          entities,
+          start: new Date().getTime(),
+        };
+        await post<Preview, Preview>('/messages/preview', preview);
+        timeoutSendPreview.current = null;
+      }, 300);
+    }
   };
 
   const handleKey: React.KeyboardEventHandler = e => {
@@ -43,12 +72,13 @@ export const MessageInputArea: React.FC<Props> = ({ channel, member }) => {
   };
 
   const handleSend = async () => {
+    const { text: parsed, entities } = parse(text);
     await post<Message, NewMessage>('/messages/send', {
       messageId: id.current,
       channelId: channel.id,
       name: inGame ? name : me.nickname,
-      text,
-      entities: [],
+      text: parsed,
+      entities,
       inGame,
       isAction,
     });
@@ -131,6 +161,8 @@ export const MessageInputArea: React.FC<Props> = ({ channel, member }) => {
         inputClassName="message-input"
         value={text}
         onChange={handleText}
+        onCompositionStart={() => (inputting.current = true)}
+        onCompositionEnd={() => (inputting.current = false)}
         onKeyDown={handleKey}
         placeholder="在这里说点什么吧..."
         multiline

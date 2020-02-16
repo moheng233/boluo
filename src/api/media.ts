@@ -6,5 +6,5 @@ export interface Media {
   originalFilename: string;
   hash: string;
   description: string;
-  created: string;
+  created: number;
 }

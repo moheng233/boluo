@@ -11,14 +11,14 @@ export interface Channel {
   name: string;
   topic: string;
   spaceId: string;
-  created: string;
+  created: number;
   isPublic: boolean;
 }
 
 export interface ChannelMember {
   userId: string;
   channelId: string;
-  joinDate: string;
+  joinDate: number;
   characterName: string;
   isMaster: boolean;
   textColor: string;

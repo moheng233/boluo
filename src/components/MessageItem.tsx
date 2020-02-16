@@ -2,6 +2,8 @@ import React from 'react';
 import { Message } from '../api/messages';
 import './MessageItem.scss';
 import { nameToHSL } from '../utils';
+import { Expr } from './Expr';
+import { MessageContent } from './MessageContent';
 
 interface Props {
   message: Message;
@@ -27,7 +29,7 @@ export const MessageItem: React.FC<Props> = ({ message }) => {
   return (
     <div className={classes.join(' ')} style={style}>
       <div className="name">{message.name}</div>
-      <div className="text">{message.text}</div>
+      <MessageContent text={message.text} entities={message.entities} />
     </div>
   );
 };

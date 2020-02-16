@@ -1,3 +1,5 @@
+import { Entity } from '../entities';
+
 export interface Message {
   id: string;
   senderId: string;
@@ -14,10 +16,10 @@ export interface Message {
   folded: boolean;
   text: string;
   whisperToUsers: string[] | null;
-  entities: object;
-  created: string;
-  modified: string;
-  orderDate: string;
+  entities: Entity[];
+  created: number;
+  modified: number;
+  orderDate: number;
   orderOffset: number;
 }
 
@@ -27,14 +29,28 @@ export interface Preview {
   channelId: string;
   parentMessageId: string | null;
   name: string;
-  mediaId: string;
+  mediaId: string | null;
   inGame: boolean;
   isAction: boolean;
   isMaster: boolean;
   text: string;
   whisperToUsers: string[] | null;
-  entities: object;
-  start: string;
+  entities: Entity[];
+  start: number;
+}
+
+export interface NewPreview {
+  id: string;
+  channelId: string;
+  parentMessageId: string | null;
+  name: string;
+  mediaId: string | null;
+  inGame: boolean;
+  isAction: boolean;
+  text: string;
+  whisperToUsers: string[] | null;
+  entities: Entity[];
+  start: number;
 }
 
 export interface NewMessage {

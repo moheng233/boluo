@@ -85,20 +85,20 @@ export const METHOD_NOT_ALLOWED = 'METHOD_NOT_ALLOWED';
 export type METHOD_NOT_ALLOWED = typeof METHOD_NOT_ALLOWED;
 
 // Event
-export const NEW_MESSAGE = 'NewMessage';
+export const NEW_MESSAGE = 'newMessage';
 export type NEW_MESSAGE = typeof NEW_MESSAGE;
 
-export const MESSAGE_DELETED = 'MessageDeleted';
+export const MESSAGE_DELETED = 'messageDeleted';
 export type MESSAGE_DELETED = typeof MESSAGE_DELETED;
 
-export const MESSAGE_EDITED = 'MessageEdited';
+export const MESSAGE_EDITED = 'messageEdited';
 export type MESSAGE_EDITED = typeof MESSAGE_EDITED;
 
-export const MESSAGE_PREVIEW = 'MessagePreview';
+export const MESSAGE_PREVIEW = 'messagePreview';
 export type MESSAGE_PREVIEW = typeof MESSAGE_PREVIEW;
 
-export const CHANNEL_DELETED = 'ChannelDeleted';
+export const CHANNEL_DELETED = 'channelDeleted';
 export type CHANNEL_DELETED = typeof CHANNEL_DELETED;
 
-export const CHANNEL_EDITED = 'ChannelEdited';
+export const CHANNEL_EDITED = 'channelEdited';
 export type CHANNEL_EDITED = typeof CHANNEL_EDITED;
