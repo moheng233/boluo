@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { breakpoint, headerTransition, mediaQuery, roundedPx, spacingN, textLg } from '../../styles/atoms';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { Link, NavLink } from 'react-router-dom';
 import { gray, textColor } from '../../styles/colors';
 

@@ -1,5 +1,7 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import Icon from '../atoms/Icon';
 import close from '../../assets/icons/x-circle.svg';
 import { closeButtonActiveColor, closeButtonHoverColor, textColor } from '../../styles/colors';

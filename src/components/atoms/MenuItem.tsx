@@ -1,5 +1,5 @@
 import { SpriteSymbol } from '*.svg';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { mY, roundedSm, spacingN } from '../../styles/atoms';
 import { darken } from 'polished';
 import TextIcon from '../../components/atoms/Icon';

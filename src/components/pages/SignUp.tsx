@@ -1,7 +1,9 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useState } from 'react';
 import Title from '../atoms/Title';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import {
   alignRight,
   flex,

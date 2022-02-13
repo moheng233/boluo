@@ -1,6 +1,8 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { Suspense } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { mainWidth, margin0Auto, pX, pY } from '../../styles/atoms';
 import Header from '../organisms/Header';
 import Loading from '../../components/molecules/Loading';

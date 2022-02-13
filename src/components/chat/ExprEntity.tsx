@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import React, { MouseEventHandler, useState } from 'react';
 import Prando from 'prando';
 import {
@@ -27,7 +29,7 @@ import styled from '@emotion/styled';
 import { darken } from 'polished';
 import { blue, red, textColor } from '../../styles/colors';
 import { useSelector } from '../../store';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 interface Props {
   node: ExprNode;

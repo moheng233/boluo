@@ -1,7 +1,9 @@
+ 
+import { jsx } from '@emotion/react'
 import React, { useRef } from 'react';
 import { black, primary } from '../../styles/colors';
 import { fontMono, fontNormal, pX, pY, roundedSm, textSm } from '../../styles/atoms';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 const style = css`
   background-color: ${black};

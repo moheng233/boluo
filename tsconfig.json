@@ -13,9 +13,9 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "types": ["node", "@emotion/core"],
+    "types": ["node"],
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "downlevelIteration": true,
     "baseUrl": "./src"
   },

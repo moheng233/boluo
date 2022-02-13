@@ -1,6 +1,6 @@
 import { disabled, roundedSm, spacingN, textLg, widthFull } from '../../styles/atoms';
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { errorColor, gray, inputBgColor, textColor } from '../../styles/colors';
 
 interface DataAttributes {

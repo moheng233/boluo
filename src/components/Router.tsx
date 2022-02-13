@@ -1,29 +1,22 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useIsLoggedIn } from '../hooks/useIsLoggedIn';
+import Design from "./pages/Design";
+import Chat from "./pages/Chat";
+import LoggedInRouter from "./LoggedInRouter";
+import GuestRouter from "./GuestRouter";
 
-interface Props {}
-
-const Design = React.lazy(() => import('./pages/Design'));
-const Chat = React.lazy(() => import('./pages/Chat'));
-const LoggedInRouter = React.lazy(() => import('./LoggedInRouter'));
-const GuestRouter = React.lazy(() => import('./GuestRouter'));
+interface Props { }
 
 export const Router: React.FC<Props> = () => {
   const isLoggedIn = useIsLoggedIn();
 
   return (
-    <Switch>
-      <Route path="/design">
-        <Design />
-      </Route>
-      <Route path="/chat/:spaceId/:channelId">
-        <Chat />
-      </Route>
-      <Route path="/chat/:spaceId">
-        <Chat />
-      </Route>
-      <Route path="/">{isLoggedIn ? <LoggedInRouter /> : <GuestRouter />}</Route>
-    </Switch>
+    <Routes>
+      <Route path="/design" element={<Design />}></Route>
+      <Route path="/chat/:spaceId/:channelId" element={<Chat />}></Route>
+      <Route path="/chat/:spaceId" element={<Chat />}></Route>
+      <Route path="/" element={isLoggedIn ? <LoggedInRouter /> : <GuestRouter />}></Route>
+    </Routes>
   );
 };

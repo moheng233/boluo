@@ -1,7 +1,9 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { Space } from '../../api/spaces';
 import { Link } from 'react-router-dom';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { fontNormal, m, mR, mT, p, pX, pY, roundedPx, textXl, uiShadow } from '../../styles/atoms';
 import { lighten } from 'polished';
 import { encodeUuid } from '../../utils/id';

@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useState } from 'react';
 import { Space } from '../../api/spaces';
@@ -15,7 +17,7 @@ import CreateChannel from '../organisms/CreateChannel';
 import { useSelector } from '../../store';
 import { gray, sidebarItemActiveBgColor, sidebarItemHoverBgColor, textColor } from '../../styles/colors';
 import { NavLink } from 'react-router-dom';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import ChatHeaderButton from './ChatHeaderButton';
 import Help from './Help';
 import bellIcon from '../../assets/icons/bell-solid.svg';

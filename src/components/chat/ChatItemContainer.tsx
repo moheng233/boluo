@@ -1,7 +1,7 @@
 import { pX, pY, spacingN, textBase, textSm } from '../../styles/atoms';
 import { darken } from 'polished';
 import { bgColor, gray } from '../../styles/colors';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 export const timeColWidth = '1.5rem';
 export const nameColWidth = '9rem';

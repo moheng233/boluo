@@ -1,7 +1,9 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { ChannelMember } from '../../api/channels';
 import { useDispatch, useSelector } from '../../store';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { chatContentLineHeight } from './styles';
 import { mR, textSm } from '../../styles/atoms';
 import { gray } from '../../styles/colors';

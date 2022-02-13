@@ -1,5 +1,7 @@
+ 
+import { jsx } from '@emotion/react'
 import React from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 const style = css`
   width: 100%;

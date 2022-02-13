@@ -1,7 +1,8 @@
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import Loading from '../../components/molecules/Loading';
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { mask } from '../../styles/atoms';
 
 const Mask = styled.div`

@@ -1,6 +1,8 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useState } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { alignRight, breakpoint, largeInput, mediaQuery, mT, spacingN } from '../../styles/atoms';
 import { CreateChannel as CreateChannelData } from '../../api/channels';
 import { useForm } from 'react-hook-form';

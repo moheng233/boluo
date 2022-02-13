@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useCallback, useState } from 'react';
 import ItemToolbar from './ItemToolbar';
@@ -13,7 +15,7 @@ import { Text } from '../atoms/Text';
 import { post } from '../../api/request';
 import { throwErr } from '../../utils/errors';
 import store, { useDispatch } from '../../store';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { fontMono, pL, spacingN, textSm } from '../../styles/atoms';
 import { primary } from '../../styles/colors';
 import { Message } from '../../api/messages';

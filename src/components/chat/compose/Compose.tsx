@@ -1,5 +1,7 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { blue, gray, textColor, white } from '../../../styles/colors';
 import {
   breakpoint,

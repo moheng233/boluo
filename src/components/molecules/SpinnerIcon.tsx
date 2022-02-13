@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import React from 'react';
 import Icon from '../atoms/Icon';
 import fan from '../../assets/icons/fan.svg';

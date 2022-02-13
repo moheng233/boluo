@@ -1,6 +1,8 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { Ref, useCallback, useEffect, useRef, useState } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { useAutoHeight } from '../../../hooks/useAutoHeight';
 import { useAtom } from 'jotai';
 import { editForAtom, inGameAtom, mediaAtom, messageIdAtom, sourceAtom } from './state';

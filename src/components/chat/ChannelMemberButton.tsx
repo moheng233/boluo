@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useRef, useState } from 'react';
 import { Id } from '../../utils/id';
@@ -11,7 +13,7 @@ import { chatName } from '../../utils/game';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
 import { alignRight, mL, mR, mT } from '../../styles/atoms';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import ChatHeaderButton, { ChatHeaderButtonLink } from './ChatHeaderButton';
 import { useForm } from 'react-hook-form';
 import { EditChannelMember } from '../../api/channels';

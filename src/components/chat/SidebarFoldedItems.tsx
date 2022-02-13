@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useCallback, useRef, useState } from 'react';
 import ChatHeaderButton, { ChatHeaderButtonNavLink, sidebarIconButton } from './ChatHeaderButton';
@@ -11,7 +13,7 @@ import Overlay from '../atoms/Overlay';
 import { chatPath } from '../../utils/path';
 import Help from './Help';
 import help from '../../assets/icons/help.svg';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { mB, pY } from '../../styles/atoms';
 import UserStatusButton from './UserStatusButton';
 import bellIcon from '../../assets/icons/bell-solid.svg';

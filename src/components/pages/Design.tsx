@@ -1,8 +1,10 @@
+ 
+import { jsx } from '@emotion/react'
 import React, { useRef, useState } from 'react';
 import Icon from '../atoms/Icon';
 import 'sanitize.css';
 import 'sanitize.css/typography.css';
-import { css, Global } from '@emotion/core';
+import { css, Global } from '@emotion/react';
 import styled from '@emotion/styled';
 import Button from '../atoms/Button';
 import fan from '../../assets/icons/fan.svg';

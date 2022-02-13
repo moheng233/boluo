@@ -1,7 +1,9 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { Suspense } from 'react';
 import { Portal } from './Portal';
-import { css, keyframes } from '@emotion/core';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { mask, modalZIndex } from '../../styles/atoms';
 import Loading from '../../components/molecules/Loading';

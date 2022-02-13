@@ -2,7 +2,7 @@
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'react-hooks'],
+  plugins: ['@typescript-eslint', 'react-hooks', '@emotion'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
@@ -28,5 +28,6 @@ module.exports = {
     'react/prop-types': 'off',
     'react/display-name': 'off',
     'no-empty': 'off',
+    "@emotion/pkg-renaming": "error"
   },
 };

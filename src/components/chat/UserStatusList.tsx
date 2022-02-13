@@ -6,7 +6,7 @@ import { roundedSm, textSm, uiShadow } from '../../styles/atoms';
 import MemberListItem from './MemberListItem';
 import { blue, gray } from '../../styles/colors';
 import { useChannelId } from '../../hooks/useChannelId';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import userPlusIcon from '../../assets/icons/user-plus.svg';
 import Icon from '../atoms/Icon';
 import { Id } from '../../utils/id';

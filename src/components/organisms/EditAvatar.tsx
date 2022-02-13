@@ -1,8 +1,10 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useRef, useState } from 'react';
 import Avatar from '../molecules/Avatar';
 import { Id } from '../../utils/id';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { mediaUrl } from '../../api/request';
 
 interface Props {

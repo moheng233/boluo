@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useCallback, useRef, useState } from 'react';
 import { ChannelMember } from '../../api/channels';
@@ -8,7 +10,7 @@ import { blue, gray } from '../../styles/colors';
 import { User } from '../../api/users';
 import { SpaceMember } from '../../api/spaces';
 import Avatar from '../molecules/Avatar';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import MemberDialog from './MemberDialog';
 import MemberTags from './MemberTags';
 

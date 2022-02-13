@@ -1,6 +1,8 @@
+ 
+import { jsx } from '@emotion/react'
 import React from 'react';
 import styled from '@emotion/styled';
-import { css, keyframes } from '@emotion/core';
+import { css, keyframes } from '@emotion/react';
 import rotateIcon from '../../assets/icons/rotate-cw.svg';
 import TextIcon from '../atoms/Icon';
 import { fontMono, pY, spacingN, textSm, textXl } from '../../styles/atoms';

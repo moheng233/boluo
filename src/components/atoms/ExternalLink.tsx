@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import Icon from '../../components/atoms/Icon';
 import icon from '../../assets/icons/external-link.svg';

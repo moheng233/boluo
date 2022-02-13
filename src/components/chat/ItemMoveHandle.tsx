@@ -1,5 +1,7 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { p, pY, roundedMd, textXs } from '../../styles/atoms';
 import { darken } from 'polished';
 import { textColor } from '../../styles/colors';

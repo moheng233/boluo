@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import SpriteSvg from '../atoms/SpriteSvg';
 import defaultAvatar from '../../assets/cultist.svg';

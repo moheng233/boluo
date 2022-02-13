@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useState } from 'react';
 import { EditSpace, Space, SpaceMember, SpaceMemberWithUser } from '../../api/spaces';
@@ -14,7 +16,7 @@ import {
   widthFull,
 } from '../../styles/atoms';
 import { PanelTitle } from '../atoms/PanelTitle';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import Panel from '../molecules/Panel';
 import { useForm } from 'react-hook-form';
 import { AppError } from '../../api/error';

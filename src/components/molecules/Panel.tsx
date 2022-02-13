@@ -1,6 +1,8 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import Modal from '../atoms/Modal';
-import { css, keyframes } from '@emotion/core';
+import { css, keyframes } from '@emotion/react';
 import CloseButton from './CloseButton';
 import { spacingN } from '../../styles/atoms';
 import { dialogBgColor, dialogShadowColor } from '../../styles/colors';

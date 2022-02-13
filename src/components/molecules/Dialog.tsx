@@ -1,6 +1,8 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useCallback, useEffect } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import Button, { ButtonVariant } from '../atoms/Button';
 import { breakpoint, mediaQuery, pX, pY, roundedMd, spacingN, textXl } from '../../styles/atoms';
 import CloseButton from './CloseButton';

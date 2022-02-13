@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { Preview } from '../../api/events';
 import { chatItemContainer } from './ChatItemContainer';
@@ -5,7 +7,7 @@ import ChatItemName from './ChatItemName';
 import ChatItemContent from './ItemContent';
 import { ChatItemContentContainer } from './ChatItemContentContainer';
 import { nameContainer, previewInGame, previewOutGame } from './styles';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { textXs } from '../../styles/atoms';
 
 interface Props {

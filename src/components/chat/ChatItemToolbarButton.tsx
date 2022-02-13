@@ -1,8 +1,10 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { fontBase, fontNormal, p, textBase, textLg, textXs } from '../../styles/atoms';
 import { toolbarRadius } from './ItemToolbar';
 import { darken } from 'polished';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { SpriteSymbol } from '*.svg';
 import Icon from '../atoms/Icon';
 import Tooltip, { TooltipProps } from '../atoms/Tooltip';

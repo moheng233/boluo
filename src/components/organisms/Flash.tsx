@@ -1,7 +1,8 @@
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { Portal } from '../atoms/Portal';
 import InformationBar from '../molecules/InformationBar';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { useDispatch } from '../../store';
 import { mY, textSm } from '../../styles/atoms';
 import { Information } from '../../information';

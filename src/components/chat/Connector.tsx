@@ -1,7 +1,9 @@
+ 
+import { jsx } from '@emotion/react'
 import { connectStateAtom, useSpaceConnection } from '../../hooks/useSpaceConnection';
 import { useEffect, useState } from 'react';
 import { useAtomValue } from 'jotai/utils';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import React from 'react';
 import { spacingN } from '../../styles/atoms';
 

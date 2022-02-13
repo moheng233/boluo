@@ -1,10 +1,12 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useState } from 'react';
 import Dialog from '../molecules/Dialog';
 import Text from '../atoms/Text';
 import { fontBold, mY, roundedSm, spacingN, textSm } from '../../styles/atoms';
 import { Code } from '../atoms/Code';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { black, blue, textColor } from '../../styles/colors';
 import { HelpText } from '../atoms/HelpText';
 import Icon from '../atoms/Icon';

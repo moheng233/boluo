@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import { Channel } from '../../api/channels';
 import { chatPath } from '../../utils/path';
 import Icon from '../atoms/Icon';
@@ -8,7 +10,7 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import { gray } from '../../styles/colors';
 import { useSelector } from '../../store';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 
 interface Props {
   channel: Channel;

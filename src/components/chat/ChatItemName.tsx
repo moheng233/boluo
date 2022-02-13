@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useRef } from 'react';
 import Prando from 'prando';
@@ -7,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { fontBold, inline, mL, mR, relative, textSm } from '../../styles/atoms';
 import Icon from '../atoms/Icon';
 import masterIcon from '../../assets/icons/gamemaster.svg';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { gray } from '../../styles/colors';
 import { chatContentLineHeight } from './styles';
 import Tooltip from '../atoms/Tooltip';

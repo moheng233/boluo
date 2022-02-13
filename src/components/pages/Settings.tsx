@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -16,7 +18,7 @@ import save from '../../assets/icons/save.svg';
 import Icon from '../atoms/Icon';
 import TextArea from '../atoms/TextArea';
 import EditAvatar from '../organisms/EditAvatar';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { RenderError } from '../molecules/RenderError';
 
 const nicknameFieldStyle = css`

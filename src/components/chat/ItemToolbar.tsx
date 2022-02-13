@@ -1,6 +1,6 @@
 import { pX, pY } from '../../styles/atoms';
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import React from 'react';
 import { floatPanel } from './styles';
 

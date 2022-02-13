@@ -1,9 +1,11 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import Tooltip from '../../atoms/Tooltip';
 import { relative, textXs } from '../../../styles/atoms';
 import ChatItemToolbarButton from '../ChatItemToolbarButton';
 import mask from '../../../assets/icons/theater-masks.svg';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { useAtom } from 'jotai';
 import { inGameAtom } from './state';
 import { useCallback } from 'react';

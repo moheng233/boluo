@@ -1,7 +1,9 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { User } from '../../api/users';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { gray, primary } from '../../styles/colors';
 import { color, flex, fontBold, mB, mR, mT, pX, roundedSm, textXl } from '../../styles/atoms';
 import { Link } from 'react-router-dom';

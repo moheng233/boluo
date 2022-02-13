@@ -1,6 +1,8 @@
+ 
+import { jsx } from '@emotion/react'
 import { SpaceMemberWithUser, StatusKind } from '../../api/spaces';
 import React from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { color, pL, pX, pY } from '../../styles/atoms';
 import { gray, green } from '../../styles/colors';
 import { Id } from '../../utils/id';

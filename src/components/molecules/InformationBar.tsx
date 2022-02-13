@@ -1,5 +1,7 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { lighten } from 'polished';
 import styled from '@emotion/styled';
 import { roundedSm, spacingN, textBase, textXl, uiShadow } from '../../styles/atoms';

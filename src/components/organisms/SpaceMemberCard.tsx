@@ -1,10 +1,12 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useEffect } from 'react';
 import { Space, SpaceMember } from '../../api/spaces';
 import { AppResult } from '../../api/request';
 import SpaceRoleTag from '../molecules/SpaceRoleTag';
 import Badge from '../atoms/Badge';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { mR, mT, pX, pY, roundedPx, textLg, uiShadow } from '../../styles/atoms';
 import { darken } from 'polished';
 import LeaveSpaceButton from '../molecules/LeaveSpaceButton';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import {
   breakpoint,
   largeInput,
@@ -33,7 +33,7 @@ import Text from '../atoms/Text';
 import { ValueType } from 'react-select';
 import { Set } from 'immutable';
 import Dialog from '../molecules/Dialog';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { chatPath } from '../../utils/path';
 import { showFlash } from '../../actions/flash';
 import { Id } from '../../utils/id';
@@ -83,7 +83,7 @@ function ManageChannel({ channel, dismiss }: Props) {
   const [defaultDice, setDefaultDice] = useState<DiceOption | undefined>(undefined);
   const [submitting, setSubmitting] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
-  const history = useHistory();
+  const history = useNavigate();
   const dispatch = useDispatch();
   const members = useSelector((state) => state.chatStates.get(channelId)?.members) || [];
   const spaceMember = useSelector((state) => state.profile?.spaces.get(channel.spaceId)?.member);

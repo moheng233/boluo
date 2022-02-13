@@ -1,4 +1,5 @@
-import { css, Interpolation, keyframes } from '@emotion/core';
+import { ArrayInterpolation, css, Interpolation, keyframes, SerializedStyles } from '@emotion/react';
+import styled from '@emotion/styled';
 import { darken, lighten, mix, transparentize } from 'polished';
 import { Theme } from 'react-select';
 import {
@@ -12,25 +13,25 @@ import {
   uiShadowColor,
 } from './colors';
 
-export const onDisabled = (...styles: Interpolation[]) =>
+export const onDisabled = (...styles: SerializedStyles[]) =>
   css`
     &:disabled {
       ${css(styles)};
     }
   `;
-export const onHover = (...styles: Interpolation[]) =>
+export const onHover = (...styles: SerializedStyles[]) =>
   css`
     &:hover {
       ${css(styles)};
     }
   `;
-export const onFocus = (...styles: Interpolation[]) =>
+export const onFocus = (...styles: SerializedStyles[]) =>
   css`
     &:focus {
       ${css(styles)};
     }
   `;
-export const onActive = (...styles: Interpolation[]) =>
+export const onActive = (...styles: SerializedStyles[]) =>
   css`
     &:active {
       ${css(styles)};
@@ -39,7 +40,7 @@ export const onActive = (...styles: Interpolation[]) =>
 
 export const mediaQuery = (breakPoint: string) => `@media (min-width: ${breakPoint})`;
 
-export const responsive = (breakPoint: string, ...styles: Interpolation[]) =>
+export const responsive = (breakPoint: string, ...styles: SerializedStyles[]) =>
   css`
     ${mediaQuery(breakPoint)} {
       ${css(styles)}
@@ -52,10 +53,10 @@ export const breakpoint = {
   xl: '1280px',
 };
 
-export const sm = (...styles: Interpolation[]) => responsive(breakpoint.sm, styles);
-export const md = (...styles: Interpolation[]) => responsive(breakpoint.md, styles);
-export const lg = (...styles: Interpolation[]) => responsive(breakpoint.lg, styles);
-export const xl = (...styles: Interpolation[]) => responsive(breakpoint.xl, styles);
+export const sm = (styles: SerializedStyles) => responsive(breakpoint.sm, styles);
+export const md = (styles: SerializedStyles) => responsive(breakpoint.md, styles);
+export const lg = (styles: SerializedStyles) => responsive(breakpoint.lg, styles);
+export const xl = (styles: SerializedStyles) => responsive(breakpoint.xl, styles);
 
 export const spinFrames = keyframes`
   from {

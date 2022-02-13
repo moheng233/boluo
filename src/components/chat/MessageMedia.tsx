@@ -1,6 +1,8 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { roundedSm } from '../../styles/atoms';
 import Modal from '../atoms/Modal';
 import { Id } from '../../utils/id';

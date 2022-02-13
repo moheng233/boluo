@@ -1,5 +1,7 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
-import { css, keyframes } from '@emotion/core';
+import { css, keyframes } from '@emotion/react';
 import { roundedMd, spacingN } from '../../styles/atoms';
 import { menuBgColor } from '../../styles/colors';
 

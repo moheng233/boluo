@@ -1,3 +1,5 @@
+ 
+import { jsx } from '@emotion/react'
 import * as React from 'react';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from '../../store';
@@ -9,7 +11,7 @@ import { ChatState } from '../../reducers/chatState';
 import { MessageItem, PreviewItem } from '../../states/chat-item-set';
 import ChatItem from './ChatItem';
 import LoadMore from './LoadMore';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import { Id } from '../../utils/id';
 import { blue } from '../../styles/colors';
 import { List } from 'immutable';
