@@ -47,46 +47,40 @@ function Login() {
     }
   };
 
-  return (
-    <>
-      <Title>登录</Title>
-      {loginError && <RenderError error={loginError} variant="component" rewrite={errorRewrite} />}
+  return <>
+    <Title>登录</Title>
+    {loginError && <RenderError error={loginError} variant="component" rewrite={errorRewrite} />}
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div css={[sm(flex)]}>
-          <div css={[mY(2), sm(mR(2), flex1)]}>
-            <Label htmlFor="username">用户名 / 邮箱</Label>
-            <Input
-              css={largeInput}
-              id="username"
-              name="username"
-              autoComplete="username"
-              ref={register({ required })}
-            />
-            {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
-          </div>
-          <div css={[mY(2), flex1]}>
-            <Label htmlFor="password">密码</Label>
-            <Input
-              css={largeInput}
-              type="password"
-              id="password"
-              name="password"
-              autoComplete="current-password"
-              ref={register({ required })}
-            />
-            {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
-          </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div css={[sm(flex)]}>
+        <div css={[mY(2), sm(mR(2), flex1)]}>
+          <Label htmlFor="username">用户名 / 邮箱</Label>
+          <Input
+            css={largeInput}
+            id="username"
+            {...register('username', { required })}
+            autoComplete="username" />
+          {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
         </div>
-        <div css={alignRight}>
-          <Button css={[mT(4), textLg]} data-variant="primary" type="submit" disabled={loggingIn}>
-            <Icon sprite={loginIcon} loading={loggingIn} />
-            登录
-          </Button>
+        <div css={[mY(2), flex1]}>
+          <Label htmlFor="password">密码</Label>
+          <Input
+            css={largeInput}
+            type="password"
+            id="password"
+            {...register('password', { required })}
+            autoComplete="current-password" />
+          {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
         </div>
-      </form>
-    </>
-  );
+      </div>
+      <div css={alignRight}>
+        <Button css={[mT(4), textLg]} data-variant="primary" type="submit" disabled={loggingIn}>
+          <Icon sprite={loginIcon} loading={loggingIn} />
+          登录
+        </Button>
+      </div>
+    </form>
+  </>;
 }
 
 export default Login;

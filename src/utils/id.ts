@@ -47,14 +47,12 @@ export function encodeUuid(id: Id): string {
   const hex = id.replace(/-/g, '');
   const buffer = hexToBytes(hex);
   const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
-  return (
-    base64
-      // URL safe characters
-      .replace(/\+/g, '-')
-      .replace(/\//g, '~')
-      // Use base64 to encode uuid, there must be two "=" at the end
-      .replace(/=/g, '')
-  );
+  return base64
+    // URL safe characters
+    .replace(/\+/g, '-')
+    .replace(/\//g, '~')
+    // Use base64 to encode uuid, there must be two "=" at the end
+    .replace(/=/g, '');
 }
 
 export function decodeUuid(s: string): Id {

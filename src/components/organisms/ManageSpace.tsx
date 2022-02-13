@@ -93,10 +93,14 @@ function ManageSpace({ space, my, dismiss }: Props) {
       <PanelTitle>管理位面</PanelTitle>
       {editError && <RenderError error={editError} variant="component" />}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input readOnly value={space.id} name="spaceId" ref={register({ required })} hidden />
+        <input readOnly value={space.id} {...register('spaceId', { required })} hidden />
         <div>
           <Label htmlFor="name">位面名</Label>
-          <Input css={largeInput} id="name" name="name" defaultValue={space.name} ref={register(spaceNameValidation)} />
+          <Input
+            css={largeInput}
+            id="name"
+            {...register('name', spaceNameValidation)}
+            defaultValue={space.name} />
           {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         </div>
         <div>
@@ -117,21 +121,27 @@ function ManageSpace({ space, my, dismiss }: Props) {
           <TextArea
             id="description"
             defaultValue={space.description}
-            name="description"
-            ref={register(descriptionValidation)}
-          />
+            {...register('description', descriptionValidation)} />
           <HelpText>简要描述一下这个位面。</HelpText>
           {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
         </div>
         <div css={[mY(2)]}>
           <Label>
-            <input type="checkbox" defaultChecked={space.explorable} ref={register} name="explorable" id="explorable" />{' '}
+            <input
+              type="checkbox"
+              defaultChecked={space.explorable}
+              {...register('explorable')}
+              id="explorable" />{' '}
             在「探索位面」中列出
           </Label>
         </div>
         <div css={[mY(2)]}>
           <Label css={pB(0)}>
-            <input type="checkbox" defaultChecked={space.isPublic} ref={register} name="isPublic" id="isPublic" />{' '}
+            <input
+              type="checkbox"
+              defaultChecked={space.isPublic}
+              {...register('isPublic')}
+              id="isPublic" />{' '}
             公开位面
           </Label>
           <HelpText>非公开位面只能通过邀请链接来加入</HelpText>
@@ -141,10 +151,8 @@ function ManageSpace({ space, my, dismiss }: Props) {
             <input
               type="checkbox"
               defaultChecked={space.allowSpectator}
-              ref={register}
-              name="allowSpectator"
-              id="allowSpectator"
-            />{' '}
+              {...register('allowSpectator')}
+              id="allowSpectator" />{' '}
             允许旁观者
           </Label>
         </div>

@@ -87,63 +87,55 @@ function Settings() {
     }
   };
 
-  return (
-    <>
-      {updated && <InformationBar variant="SUCCESS">设置已更新</InformationBar>}
-      {appError && <RenderError error={appError} variant="component" />}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div css={[flex, mT(4)]}>
-          <div css={nicknameFieldStyle}>
-            <Label htmlFor="nickname">昵称</Label>
-            <Input
-              css={largeInput}
-              defaultValue={user.nickname}
-              id="nickname"
-              name="nickname"
-              ref={register(nicknameValidation)}
-            />
-            {errors.nickname && <ErrorMessage>{errors.nickname.message}</ErrorMessage>}
-          </div>
-          <EditAvatar size="8rem" selectFile={setAvatarFile} mediaId={user.avatarId} />
+  return <>
+    {updated && <InformationBar variant="SUCCESS">设置已更新</InformationBar>}
+    {appError && <RenderError error={appError} variant="component" />}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div css={[flex, mT(4)]}>
+        <div css={nicknameFieldStyle}>
+          <Label htmlFor="nickname">昵称</Label>
+          <Input
+            css={largeInput}
+            defaultValue={user.nickname}
+            id="nickname"
+            {...register('nickname', nicknameValidation)} />
+          {errors.nickname && <ErrorMessage>{errors.nickname.message}</ErrorMessage>}
         </div>
-        <div>
-          <Label htmlFor="bio">简介</Label>
-          <TextArea defaultValue={user.bio} id="bio" name="bio" ref={register(bioValidation)} />
-        </div>
-        <div>
-          <Label>
-            <input
-              type="checkbox"
-              name="enterSend"
-              id="enterSend"
-              defaultChecked={Boolean(settings.enterSend)}
-              ref={register}
-              css={[mR(1)]}
-            />
-            使用回车键发送消息
-          </Label>
-        </div>
-        <div>
-          <Label>
-            <input
-              type="checkbox"
-              name="expandDice"
-              id="expandDice"
-              defaultChecked={Boolean(settings.expandDice)}
-              ref={register}
-              css={[mR(1)]}
-            />
-            默认展开每个骰子
-          </Label>
-        </div>
-        <div css={[alignRight, mT(2)]}>
-          <Button css={[textLg]} data-variant="primary" type="submit" disabled={submitting}>
-            <Icon sprite={save} loading={submitting} /> 保存设置
-          </Button>
-        </div>
-      </form>
-    </>
-  );
+        <EditAvatar size="8rem" selectFile={setAvatarFile} mediaId={user.avatarId} />
+      </div>
+      <div>
+        <Label htmlFor="bio">简介</Label>
+        <TextArea defaultValue={user.bio} id="bio" {...register('bio', bioValidation)} />
+      </div>
+      <div>
+        <Label>
+          <input
+            type="checkbox"
+            {...register('enterSend')}
+            id="enterSend"
+            defaultChecked={Boolean(settings.enterSend)}
+            css={[mR(1)]} />
+          使用回车键发送消息
+        </Label>
+      </div>
+      <div>
+        <Label>
+          <input
+            type="checkbox"
+            {...register('expandDice')}
+            id="expandDice"
+            defaultChecked={Boolean(settings.expandDice)}
+            css={[mR(1)]} />
+          默认展开每个骰子
+        </Label>
+      </div>
+      <div css={[alignRight, mT(2)]}>
+        <Button css={[textLg]} data-variant="primary" type="submit" disabled={submitting}>
+          <Icon sprite={save} loading={submitting} /> 保存设置
+        </Button>
+      </div>
+    </form>
+  </>;
 }
 
 export default Settings;

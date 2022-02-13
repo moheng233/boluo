@@ -74,7 +74,7 @@ function CreateChannel({ space, dismiss }: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Label htmlFor="name">频道名</Label>
-          <Input css={largeInput} id="name" name="name" ref={register(channelNameValidation())} />
+          <Input css={largeInput} id="name" {...register('name', channelNameValidation())} />
           {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         </div>
         <div>
@@ -94,15 +94,17 @@ function CreateChannel({ space, dismiss }: Props) {
           <Label htmlFor="characterName">角色名</Label>
           <Input
             id="characterName"
-            name="characterName"
-            placeholder="例如：KP"
-            ref={register(characterNameValidation)}
-          />
+            {...register('characterName', characterNameValidation)}
+            placeholder="例如：KP" />
           {errors.characterName && <ErrorMessage>{errors.characterName.message}</ErrorMessage>}
         </div>
         <div>
           <Label>
-            <input name="isPrivate" id="isPrivate" defaultChecked={false} ref={register} type="checkbox" /> 秘密频道
+            <input
+              {...register('isPrivate')}
+              id="isPrivate"
+              defaultChecked={false}
+              type="checkbox" /> 秘密频道
           </Label>
           <HelpText>秘密频道通过邀请进入。</HelpText>
         </div>

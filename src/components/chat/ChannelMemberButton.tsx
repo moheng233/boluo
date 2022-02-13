@@ -128,11 +128,9 @@ function ChannelMemberButton({ className }: Props) {
       </Label>
       <Input
         id="characterName"
-        name="characterName"
-        ref={register(characterNameValidation)}
+        {...register('characterName', characterNameValidation)}
         placeholder="例如：甘道夫"
-        defaultValue={member?.characterName}
-      />
+        defaultValue={member?.characterName} />
       {errors.characterName && <ErrorMessage>{errors.characterName.message}</ErrorMessage>}
     </div>
   );

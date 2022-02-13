@@ -57,65 +57,59 @@ function NewSpace() {
       setCreationError(result.value);
     }
   };
-  return (
-    <>
-      <Title>
-        <Icon sprite={implosion} /> 开辟新的位面
-      </Title>
-      {creationError && <RenderError error={creationError} variant="component" />}
+  return <>
+    <Title>
+      <Icon sprite={implosion} /> 开辟新的位面
+    </Title>
+    {creationError && <RenderError error={creationError} variant="component" />}
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div css={[md(fieldsLayout)]}>
-          <div css={[mY(2), gridColumn(1, 3)]}>
-            <Label htmlFor="name">位面名</Label>
-            <Input css={largeInput} id="name" name="name" ref={register(spaceNameValidation)} />
-            {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
-          </div>
-          <div css={mY(2)}>
-            <Label htmlFor="defaultDiceType">默认骰子</Label>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div css={[md(fieldsLayout)]}>
+        <div css={[mY(2), gridColumn(1, 3)]}>
+          <Label htmlFor="name">位面名</Label>
+          <Input css={largeInput} id="name" {...register('name', spaceNameValidation)} />
+          {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+        </div>
+        <div css={mY(2)}>
+          <Label htmlFor="defaultDiceType">默认骰子</Label>
 
-            <DiceSelect
-              id="defaultDiceType"
-              name="defaultDiceType"
-              defaultDiceType="d20"
-              value={defaultDice}
-              onChange={setDefaultDice}
-            />
-            {/*<Controller name="defaultDiceType" as={DiceSelect} control={control} rules={{ required }}/>*/}
-            <HelpText>
-              当输入 <code>1d20</code> 的时候可以简化成 <code>1d</code>。
-            </HelpText>
-          </div>
-          <div css={[mY(2)]}>
-            <Label htmlFor="firstChannelName">初始频道名</Label>
-            <Input
-              css={largeInput}
-              defaultValue="综合"
-              id="firstChannelName"
-              name="firstChannelName"
-              ref={register(channelNameValidation())}
-            />
-            <HelpText>频道中可以发送各种消息。</HelpText>
-          </div>
-          <div css={[mY(2), gridColumn(1, -1)]}>
-            <Label htmlFor="description">简介</Label>
-            <TextArea
-              placeholder="（选填）简要描述一下这个位面。"
-              id="description"
-              name="description"
-              ref={register(descriptionValidation)}
-            />
-          </div>
+          <DiceSelect
+            id="defaultDiceType"
+            name="defaultDiceType"
+            defaultDiceType="d20"
+            value={defaultDice}
+            onChange={setDefaultDice}
+          />
+          {/*<Controller name="defaultDiceType" as={DiceSelect} control={control} rules={{ required }}/>*/}
+          <HelpText>
+            当输入 <code>1d20</code> 的时候可以简化成 <code>1d</code>。
+          </HelpText>
         </div>
-        <div css={[alignRight]}>
-          <Button css={[mT(4), textLg]} type="submit" data-variant="primary" disabled={submitting}>
-            <Icon sprite={nightSky} loading={submitting} />
-            创建位面
-          </Button>
+        <div css={[mY(2)]}>
+          <Label htmlFor="firstChannelName">初始频道名</Label>
+          <Input
+            css={largeInput}
+            defaultValue="综合"
+            id="firstChannelName"
+            {...register('firstChannelName', channelNameValidation())} />
+          <HelpText>频道中可以发送各种消息。</HelpText>
         </div>
-      </form>
-    </>
-  );
+        <div css={[mY(2), gridColumn(1, -1)]}>
+          <Label htmlFor="description">简介</Label>
+          <TextArea
+            placeholder="（选填）简要描述一下这个位面。"
+            id="description"
+            {...register('description', descriptionValidation)} />
+        </div>
+      </div>
+      <div css={[alignRight]}>
+        <Button css={[mT(4), textLg]} type="submit" data-variant="primary" disabled={submitting}>
+          <Icon sprite={nightSky} loading={submitting} />
+          创建位面
+        </Button>
+      </div>
+    </form>
+  </>;
 }
 
 export default NewSpace;

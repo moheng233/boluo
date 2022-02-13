@@ -130,7 +130,7 @@ function ManageChannel({ channel, dismiss }: Props) {
   const deleteChannel = async () => {
     const result = await post('/channels/delete', {}, { id: channelId });
     if (result.isOk) {
-      history.push(chatPath(channel.spaceId));
+      history(chatPath(channel.spaceId));
     } else {
       dispatch(showFlash('ERROR', '删除频道失败'));
     }
@@ -149,10 +149,8 @@ function ManageChannel({ channel, dismiss }: Props) {
           <Input
             css={largeInput}
             id="name"
-            name="name"
-            defaultValue={channel.name}
-            ref={register(channelNameValidation(channel.spaceId, channel.name))}
-          />
+            {...register('name', channelNameValidation(channel.spaceId, channel.name))}
+            defaultValue={channel.name} />
           {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         </div>
         <div css={field}>
@@ -173,10 +171,8 @@ function ManageChannel({ channel, dismiss }: Props) {
           <Input
             css={largeInput}
             id="defaultRollCommand"
-            name="defaultRollCommand"
-            defaultValue={channel.defaultRollCommand}
-            ref={register}
-          />
+            {...register('defaultRollCommand')}
+            defaultValue={channel.defaultRollCommand} />
           <HelpText>「插入骰子」按钮自动插入的指令</HelpText>
         </div>
         <div css={field}>
@@ -184,10 +180,8 @@ function ManageChannel({ channel, dismiss }: Props) {
           <TextArea
             id="topic"
             defaultValue={channel.topic}
-            name="topic"
-            placeholder="例如：在你们护送物资的时候，四只地精埋伏你们于路边"
-            ref={register(channelTopicValidation)}
-          />
+            {...register('topic', channelTopicValidation)}
+            placeholder="例如：在你们护送物资的时候，四只地精埋伏你们于路边" />
           <HelpText>话题可以用来记录和提醒你们当前专注于什么。</HelpText>
           {errors.topic && <ErrorMessage>{errors.topic.message}</ErrorMessage>}
         </div>
@@ -197,7 +191,11 @@ function ManageChannel({ channel, dismiss }: Props) {
         </div>
         <div css={field}>
           <Label>
-            <input name="isPrivate" id="isPrivate" defaultChecked={!channel.isPublic} ref={register} type="checkbox" />{' '}
+            <input
+              {...register('isPrivate')}
+              id="isPrivate"
+              defaultChecked={!channel.isPublic}
+              type="checkbox" />{' '}
             秘密频道
           </Label>
           <HelpText>秘密频道通过邀请进入。</HelpText>
