@@ -14,7 +14,7 @@ import { HelpText } from '../atoms/HelpText';
 import { css } from '@emotion/react';
 import { post } from '../../api/request';
 import Button from '../atoms/Button';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useDispatch } from '../../store';
 import { JoinedSpace } from '../../actions/profile';
 import implosion from '../../assets/icons/implosion.svg';
@@ -37,10 +37,17 @@ function NewSpace() {
   useTitle('新建位面');
   const [creationError, setCreationError] = useState<AppError | null>(null);
   const [defaultDice, setDefaultDice] = useState<DiceOption | undefined>(undefined);
-  const { register, handleSubmit, errors } = useForm<CreateSpace>();
+  const {
+    register,
+    handleSubmit,
+
+    formState: {
+      errors,
+    },
+  } = useForm<CreateSpace>();
   const [submitting, setSubmitting] = useState(false);
 
-  const history = useHistory();
+  const history =  useNavigate();
   const dispatch = useDispatch();
 
   const onSubmit = async (data: CreateSpace) => {
@@ -52,7 +59,7 @@ function NewSpace() {
       const { space, member } = result.value;
       const action: JoinedSpace = { type: 'JOINED_SPACE', space, member };
       dispatch<JoinedSpace>(action);
-      history.push(`/space/${encodeUuid(space.id)}`);
+      history(`/space/${encodeUuid(space.id)}`);
     } else {
       setCreationError(result.value);
     }

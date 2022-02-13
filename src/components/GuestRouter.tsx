@@ -12,30 +12,31 @@ import React from 'react';
 export function GuestRouter() {
   return (
     <BasePage>
-        <Route path="/login">
-          <Login />
+      <Routes>
+        <Route path="login" element={<Login></Login>}>
         </Route>
-        <Route path="/sign-up">
-          <SignUp />
+        <Route path="sign-up" element={<SignUp />}>
+          
         </Route>
-        <Route path="/profile/:id">
-          <Profile />
+        <Route path="profile/:id" element={<Profile />}>
+          
         </Route>
-        <Route path="/space/explore">
-          <ExploreSpace />
+        <Route path="space/explore" element={<ExploreSpace />}>
+          
         </Route>
-        <Route path="/space/:id">
-          <SpacePage />
+        <Route path="space/:id" element={<SpacePage />}>
+          
         </Route>
-        <Route path="/join/space/:id/:token">
-          <Link to="/login" />
+        <Route path="join/space/:id/:token" element={<Link to="/login" />}>
+          
         </Route>
-        <Route path="/">
-          <GuestHome />
+        <Route path="/" element={<GuestHome />}>
+          
         </Route>
-        <Route path="/">
-          <NotFound />
+        <Route path="/" element={<NotFound />}>
+          
         </Route>
+      </Routes>
     </BasePage>
   );
 }

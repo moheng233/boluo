@@ -31,7 +31,7 @@ import TextArea from '../atoms/TextArea';
 import Button from '../atoms/Button';
 import { post } from '../../api/request';
 import { useDispatch } from '../../store';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import deleteSpaceIcon from '../../assets/icons/earth-crack.svg';
 import Text from '../atoms/Text';
 import Icon from '../atoms/Icon';
@@ -54,11 +54,18 @@ const panelStyle = css`
 `;
 
 function ManageSpace({ space, my, dismiss }: Props) {
-  const { register, handleSubmit, errors } = useForm<EditSpace>();
+  const {
+    register,
+    handleSubmit,
+
+    formState: {
+      errors,
+    },
+  } = useForm<EditSpace>();
   const [editError, setEditError] = useState<AppError | null>(null);
   const [defaultDice, setDefaultDice] = useState<DiceOption | undefined>(undefined);
   const [deleteDialog, showDeleteDialog] = useState(false);
-  const history = useHistory();
+  const history =  useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
   if (space.ownerId !== my.userId && !my.isAdmin) {
@@ -85,7 +92,7 @@ function ManageSpace({ space, my, dismiss }: Props) {
       return;
     }
     dispatch({ type: 'SPACE_DELETED', spaceId: space.id });
-    history.push('/');
+    history('/');
   };
 
   return (

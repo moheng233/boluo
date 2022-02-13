@@ -1,5 +1,5 @@
  
-import { jsx } from '@emotion/react'
+import { css, jsx } from '@emotion/react'
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -53,9 +53,9 @@ function GuestHome() {
       <Text>
         <OutlineButtonLink to="/sign-up">立即加入</OutlineButtonLink>
       </Text>
-      <Text css={[textSm, mY(2)]}>
-        已经<del css={color(gray['600'])}>菠萝菠萝哒</del>有账号了？
-        <Link css={link} to="/login">
+      <Text css={css([textSm, mY(2)])}>
+        已经<del css={{color: "blue"}}>菠萝菠萝哒</del>有账号了？
+        <Link css={color(gray['600'])} to="/login">
           点此登录
         </Link>
       </Text>

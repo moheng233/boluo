@@ -1,8 +1,7 @@
-import { jsx } from '@emotion/react'
 import * as React from 'react';
 import Loading from '../../components/molecules/Loading';
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
+import { css,jsx } from '@emotion/react';
 import { mask } from '../../styles/atoms';
 
 const Mask = styled.div`
@@ -23,7 +22,9 @@ function PageLoading({ text }: Props) {
   return (
     <Mask>
       <div css={spinnerContainer}>
-        <Loading css={{ display: 'block' }} text={text} />
+        <Loading css={css({
+          display: "block"
+        })} text={text} />
       </div>
     </Mask>
   );

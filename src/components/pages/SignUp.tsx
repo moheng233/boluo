@@ -25,7 +25,7 @@ import { useForm, RegisterOptions as ValidationRules } from 'react-hook-form';
 import { post } from '../../api/request';
 import { AppError, errorText } from '../../api/error';
 import InformationBar from '../molecules/InformationBar';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { RegisterData } from '../../api/users';
 import { ErrorMessage } from '../atoms/ErrorMessage';
 import { Label } from '../atoms/Label';
@@ -64,15 +64,23 @@ const noticeStyle = css`
 
 function SignUp() {
   useTitle('注册账号');
-  const { register, handleSubmit, watch, errors } = useForm<FormData>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+
+    formState: {
+      errors,
+    },
+  } = useForm<FormData>();
   const [submitting, setSubmitting] = useState(false);
   const [registerError, setRegisterError] = useState<AppError | null>(null);
-  const history = useHistory();
+  const history = useNavigate();
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
     const result = await post('/users/register', data);
     if (result.isOk) {
-      history.replace('/login');
+      history('/login');
     } else {
       setRegisterError(result.value);
     }

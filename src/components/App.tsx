@@ -22,12 +22,12 @@ export const App: React.FC = () => {
   }
   return (
     <PageError>
-      <Suspense fallback={<PageLoading text="load modules" />}>
-        <BrowserRouter>
+      <BrowserRouter>
+        <Suspense fallback={<PageLoading text="load modules" />}>
           <Router />
-        </BrowserRouter>
-        {flashState.size !== 0 && <Flash flashState={flashState} />}
-      </Suspense>
+          {flashState.size !== 0 && <Flash flashState={flashState} />}
+        </Suspense>
+      </BrowserRouter>
     </PageError>
   );
 };

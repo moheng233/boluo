@@ -78,7 +78,14 @@ export function makeMemberOption({ user }: Member): MemberOption {
 
 function ManageChannel({ channel, dismiss }: Props) {
   const channelId = channel.id;
-  const { register, handleSubmit, errors } = useForm<FormData>();
+  const {
+    register,
+    handleSubmit,
+
+    formState: {
+      errors,
+    },
+  } = useForm<FormData>();
   const [editError, setEditError] = useState<AppError | null>(null);
   const [defaultDice, setDefaultDice] = useState<DiceOption | undefined>(undefined);
   const [submitting, setSubmitting] = useState(false);

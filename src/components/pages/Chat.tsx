@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { Route, Switch, useHistory, useParams } from 'react-router-dom';
+import { Route, Routes,  useNavigate, useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Sidebar from '../chat/Sidebar';
 import { decodeUuid, encodeUuid, Id } from '../../utils/id';
@@ -28,8 +28,8 @@ import { Provider } from 'jotai';
 import { Connector } from '../chat/Connector';
 
 interface Params {
-  spaceId: string;
-  channelId?: string;
+  "spaceId": string;
+  "channelId"?: string;
 }
 
 // noinspection CssInvalidPropertyValue
@@ -82,12 +82,12 @@ function useLoadSpace(spaceId: Id) {
 }
 
 function Chat() {
-  const params = useParams<Params>();
+  const { paramsSpaceId, paramsChannelId } = useParams();
   const [userDialog, setUserDialog] = useAtom(userDialogAtom);
-  const spaceId: Id = decodeUuid(params.spaceId);
-  const channelId: Id | undefined = params.channelId && decodeUuid(params.channelId);
+  const spaceId: Id = decodeUuid(paramsSpaceId!);
+  const channelId: Id | undefined = paramsChannelId && decodeUuid(paramsChannelId);
   const myId: Id | undefined = useMyId();
-  const history = useHistory();
+  const history =  useNavigate();
   useLoadSpace(spaceId);
   useHeartbeat();
   const result: AppResult<SpaceWithRelated> = useSelector((state) => state.ui.spaceSet.get(spaceId, errLoading()));
@@ -104,14 +104,14 @@ function Chat() {
   const { channels, space, members } = result.value;
 
   if (!space.allowSpectator && !(myId && members[myId])) {
-    history.replace(`/space/${encodeUuid(spaceId)}`);
+    history(`/space/${encodeUuid(spaceId)}`);
   }
   return (
     <Container>
       <Connector />
       <Global styles={viewHeight} />
       <Sidebar space={space} channels={channels} />
-      <Switch>
+      <Routes>
         {channelId && (
           <Route path={chatPath(spaceId, channelId)}>
             <PaneContext.Provider value={channelId}>
@@ -124,7 +124,7 @@ function Chat() {
         <Route path={chatPath(spaceId)}>
           <Home members={members} channels={channels} space={space} />
         </Route>
-      </Switch>
+      </Routes>
 
       {userDialog && <MemberDialog userId={userDialog} spaceId={spaceId} dismiss={() => setUserDialog(null)} />}
     </Container>

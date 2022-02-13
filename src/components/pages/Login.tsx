@@ -11,7 +11,7 @@ import { LoginData } from '../../api/users';
 import { ErrorMessage } from '../atoms/ErrorMessage';
 import { post } from '../../api/request';
 import { AppError, NO_PERMISSION } from '../../api/error';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { useDispatch } from '../../store';
 import { LoggedIn } from '../../actions/profile';
 import { Label } from '../atoms/Label';
@@ -30,9 +30,16 @@ const errorRewrite = {
 function Login() {
   useTitle('登录');
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history =  useNavigate();
   const [loginError, setLoginError] = useState<AppError | null>(null);
-  const { register, handleSubmit, errors } = useForm<LoginData>();
+  const {
+    register,
+    handleSubmit,
+
+    formState: {
+      errors,
+    },
+  } = useForm<LoginData>();
   const [loggingIn, setLoggingIn] = useState(false);
   const onSubmit = async (data: LoginData) => {
     setLoggingIn(true);
@@ -41,7 +48,7 @@ function Login() {
     if (result.isOk) {
       dispatch<LoggedIn>({ type: 'LOGGED_IN', ...result.value.me });
       const next = popNext() || '/';
-      history.replace(next);
+      history(next);
     } else {
       setLoginError(result.value);
     }

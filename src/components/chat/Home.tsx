@@ -18,7 +18,7 @@ import LeaveSpaceButton from '../molecules/LeaveSpaceButton';
 import { useTitle } from '../../hooks/useTitle';
 import { useChannelId } from '../../hooks/useChannelId';
 import { chatPath } from '../../utils/path';
-import { useHistory } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { blue, gray } from '../../styles/colors';
 import { chatHeaderStyle, chatHeaderToolbar } from './styles';
 import { mix } from 'polished';
@@ -89,7 +89,7 @@ function Home({ space, members, channels }: Props) {
   useTitle(space.name);
 
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history =  useNavigate();
   // const setActive = () => {
   //   if (!activePane) {
   //     dispatch({ type: 'SWITCH_ACTIVE_PANE', pane });

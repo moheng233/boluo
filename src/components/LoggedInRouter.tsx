@@ -1,5 +1,5 @@
 import BasePage from '../components/templates/BasePage';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import My from '../components/pages/My';
 import Profile from '../components/pages/Profile';
 import NewSpace from '../components/pages/NewSpace';
@@ -14,17 +14,17 @@ import React from 'react';
 function LoggedInRouter() {
   return (
     <BasePage>
-      <Switch>
-        <Route path="/" exact>
+      <Routes>
+        <Route path="/">
           <My />
         </Route>
-        <Route path="/my" exact>
+        <Route path="/my">
           <My />
         </Route>
         <Route path="/profile/:id">
           <Profile />
         </Route>
-        <Route path="/profile" exact>
+        <Route path="/profile">
           <Profile />
         </Route>
         <Route path="/space/new">
@@ -51,7 +51,7 @@ function LoggedInRouter() {
         <Route path="/">
           <NotFound />
         </Route>
-      </Switch>
+      </Routes>
     </BasePage>
   );
 }

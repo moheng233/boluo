@@ -13,10 +13,10 @@ export const Router: React.FC<Props> = () => {
 
   return (
     <Routes>
-      <Route path="/design" element={<Design />}></Route>
-      <Route path="/chat/:spaceId/:channelId" element={<Chat />}></Route>
-      <Route path="/chat/:spaceId" element={<Chat />}></Route>
-      <Route path="/" element={isLoggedIn ? <LoggedInRouter /> : <GuestRouter />}></Route>
+      <Route path="design" element={<Design />}></Route>
+      <Route path="chat/:spaceId/:channelId" element={<Chat />}></Route>
+      <Route path="chat/:spaceId" element={<Chat />}></Route>
+      <Route path="/*" element={isLoggedIn ? <LoggedInRouter /> : <GuestRouter />}></Route>
     </Routes>
   );
 };
